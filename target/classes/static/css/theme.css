@@ -19,7 +19,7 @@ h2 {
     left: 0;
     top: 0;
     width: 100%;
-    height: 250px;
+    height: auto;
     background: -webkit-linear-gradient(left, #FFF0F5, #D8BFD8);
     background: -o-linear-gradient(right, #FFF0F5, #D8BFD8);
     background: -moz-linear-gradient(right, #FFF0F5, #D8BFD8);

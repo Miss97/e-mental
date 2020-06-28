@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Login</title>
+    <title>E-mental Sign In</title>
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <link rel="stylesheet" type="text/css" href="css/theme.css">
     <link rel="stylesheet" type="text/css" href="css/character.css">
@@ -14,10 +14,10 @@
             <h1>E-MENTAL</h1>
             <h2>sub title</h2>
         </div>
-        <div id="login" class="login_form">
+        <div id="signIn" class="signIn_form">
             <input type="text"  class="qxs-ic_user qxs-icon"  placeholder="USERNAME" v-model="username">
             <input type="text"  class="qxs-ic_password qxs-icon"  placeholder="PASSWORD" v-model="password">
-            <button class="login_btn" >Sign In</button>
+            <button-sign-in></button-sign-in>
             <div style="margin-top: 10px">
                 <span style="float: left;color: #A9A9AB">Sign Up</span>
                 <span style="float: right;color: #A9A9AB">Forgot Password?</span>
@@ -28,8 +28,18 @@
 
 <script th:src="@{scripts/vue.min.js}"></script>
 <script type = "text/javascript">
+    Vue.component('button-sign-in',{
+            template:'<button class="signIn_btn" v-on:click="signInHandler">Sign In</button>',
+            methods:{
+                signInHandler:function(){
+
+                }
+            }
+        }
+    );
+
     let vm = new Vue({
-        el: '#login',
+        el: '#signIn',
         data: {
             title:'E-MENTAL',
             username: '',
