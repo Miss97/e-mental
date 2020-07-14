@@ -1,0 +1,62 @@
+.v-enter,
+.v-leave-to{
+    opacity: 0;
+    transform: translateX(150px)
+
+}
+.v-enter-active,.v-leave-active{
+    transition: all 0.6s ease
+}
+
+.signIn_form {
+    padding-top: 5%;
+    padding-left: 10%;
+    padding-right: 10%;
+    width:50%;
+    margin:0 auto;
+}
+
+.signUp_form{
+    display:none;
+    padding-top: 5%;
+    padding-left: 10%;
+    padding-right: 10%;
+    width:50%;
+    margin:0 auto;
+}
+
+.qxs-ic_user {
+    outline:none;
+    background: url("../imgs/ic_user.png") no-repeat 3%;
+    background-size: 15px 15px;
+}
+.qxs-ic_password {
+    outline:none;
+    background: url("../imgs/ic_password.png") no-repeat 3%;
+    background-size: 15px 15px;
+    margin-bottom: 20px;
+}
+
+.signIn_logo {
+    height: 100%;
+}
+
+.signIn_btn {
+    width: 100%;
+    height: 30px;
+    font-size: 16px;
+    color: #FFFFFF;
+    background-color: #D8BFD8;
+    border:none;
+    outline:none;
+    border-radius:15px;
+}
+
+a{
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 24px;
+    color: #A9A9AB;
+    margin-left: 20px;
+    margin-right: 20px;
+}
