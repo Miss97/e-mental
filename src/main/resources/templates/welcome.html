@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>E-mental</title>
+    <link rel="stylesheet" type="text/css" href="css/welcome_style.css">
+</head>
+<body>
+<!--side bar-->
+<div id="mySidenav" class="sidenav">
+    <a id="unFoldBtn" href="javascript:void(0)" class="foldBtn" onclick="openNav()">&#9776;</a>
+    <a id="foldBtn" href="javascript:void(0)" class="foldBtn" onclick="closeNav()">&#9776;</a>
+    <a href="#">Dashboard</a>
+    <a href="#">Mood Diary</a>
+    <a href="#">Calendar</a>
+    <a href="#">Reflection</a>
+    <a href="#">Lifestyle Helper</a>
+    <a href="#">Recommendation</a>
+</div>
+
+<div id="main" >
+        <iframe src="/getCalender" width="100%" height="100%" frameborder="0" scrolling="no"></iframe>
+</div>
+
+</body>
+
+<script th:src="@{scripts/vue.min.js}"></script>
+<script type="text/javascript">
+    window.onload=function(){
+        document.getElementById("foldBtn").style.display = "none";
+    }
+
+    function openNav() {
+        document.getElementById("mySidenav").style.width = "300px";
+        document.getElementById("unFoldBtn").style.display = "none";
+        document.getElementById("foldBtn").style.display = "";
+    }
+    function closeNav() {
+        document.getElementById("mySidenav").style.width = "50px";
+        document.getElementById("unFoldBtn").style.display = "";
+        document.getElementById("foldBtn").style.display = "none";
+    }
+
+</script>
+
+</html>

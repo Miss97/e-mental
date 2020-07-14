@@ -8,15 +8,20 @@ public class SingInController {
 
     @RequestMapping("/")
     public String index(){
-        return "index";
+        return "signIn";
     }
 
     @RequestMapping("/signIn")
     public String signIn(){
-        return "signIn";
+        return "welcome";
     }
 
     @RequestMapping("/signUp")
     public void signUp(){
+    }
+
+    @RequestMapping("/getCalender")
+    public String getCalender(){
+        return "calender";
     }
 }

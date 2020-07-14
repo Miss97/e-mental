@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>E-mental Sign In</title>
+    <link rel="stylesheet" type="text/css" href="css/signin_style.css">
+    <link rel="stylesheet" type="text/css" href="css/theme.css">
+    <link rel="stylesheet" type="text/css" href="css/character.css">
+</head>
+<body>
+    <div>
+        <div class="outer_label">
+            <h1>E-MENTAL</h1>
+            <h2>sub title</h2>
+        </div>
+
+        <div id="singInForm" class="signIn_form">
+            <div style="text-align:center;width:400px;margin:0 auto">
+                <a href="" @click.prevent="target='signIn'">SIGN IN</a>
+                <a href="" @click.prevent="target='signUp'">SIGN UP</a>
+            </div>
+
+            <transition name="" mode="out-in" style="margin-top: 10px">
+                <component :is="target"></component>
+            </transition>
+        </div>
+    </div>
+</body>
+
+<script th:src="@{scripts/vue.min.js}"></script>
+<script type = "text/javascript">
+    Vue.component('button-sign-in',{
+            template:'<button class="signIn_btn" v-on:click="signInHandler">Sign In</button>',
+            methods:{
+                signInHandler(){
+                    window.location.href = '/signIn';
+                }
+            }
+        }
+    );
+
+    Vue.component('button-sign-up',{
+            template:'<button class="signIn_btn" v-on:click="signInHandler">Sign Up</button>',
+            methods:{
+                signInHandler(){
+                    window.location.href = '/signIn';
+                }
+            }
+        }
+    );
+
+    Vue.component('button-fgt-pass',{
+            template:'<button class="signIn_btn" v-on:click="signInHandler">Confirm</button>',
+            methods:{
+                signInHandler(){
+                    window.location.href = '/signIn';
+                }
+            }
+        }
+    );
+
+    Vue.component('signIn',{
+            props:['username','password'],
+            template:'<div id="signIn">' +
+                        '<input type="text"  class="qxs-ic_user qxs-icon" v-model="username" placeholder="USERNAME">' +
+                        '<input type="text"  class="qxs-ic_password qxs-icon" v-model="password" placeholder="PASSWORD">' +
+                        '<button-sign-in></button-sign-in>' +
+                     '</div>'
+        }
+    )
+
+    Vue.component('signUp',{
+            template:'<div id="singUp">' +
+                        '<input type="text"  class="qxs-ic_user qxs-icon"  placeholder="USERNAME">' +
+                        '<input type="text"  class="qxs-ic_password qxs-icon"  placeholder="PASSWORD">' +
+                        '<input type="text"  class="qxs-ic_password qxs-icon"  placeholder="REPEAT PASSWORD">' +
+                        '<input type="text"  class="qxs-ic_password qxs-icon"  placeholder="EMAIL ADDRESS">' +
+                        '<button-sign-up></button-sign-up>' +
+                     '</div>'
+        }
+    )
+
+    Vue.component('fgtPass',{
+            template:'<div id="singUp">' +
+                        '<input type="text"  class="qxs-ic_user qxs-icon"  placeholder="USERNAME OR EMAIL">' +
+                        '<button-fgt-pass></button-fgt-pass>' +
+                     '</div>'
+        }
+    )
+
+    const app = new Vue({
+        el: '#singInForm',
+        data: {
+            title:'E-MENTAL',
+            username: '',
+            password: '',
+            target: 'signIn'
+        }
+    });
+</script>
+
+</html>
