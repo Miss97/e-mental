@@ -11,11 +11,11 @@ public class SignInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        Object sessionId = request.getSession().getAttribute("sessionId");
-/*        if (sessionId==null){
+        String sessionId = request.getSession().getId();
+        if (sessionId==null){
             response.sendRedirect("/");
             return false;
-        }*/
+        }
         return true;
     }
 

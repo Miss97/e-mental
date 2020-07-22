@@ -1,5 +1,4 @@
-.v-enter,
-.v-leave-to{
+.v-enter,.v-leave-to{
     opacity: 0;
     transform: translateX(150px)
 

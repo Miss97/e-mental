@@ -30,43 +30,19 @@
 
 <script th:src="@{scripts/vue.min.js}"></script>
 <script type = "text/javascript">
-    Vue.component('button-sign-in',{
-            template:'<button class="signIn_btn" v-on:click="signInHandler">Sign In</button>',
-            methods:{
-                signInHandler(){
-                    window.location.href = '/signIn';
-                }
-            }
-        }
-    );
-
-    Vue.component('button-sign-up',{
-            template:'<button class="signIn_btn" v-on:click="signInHandler">Sign Up</button>',
-            methods:{
-                signInHandler(){
-                    window.location.href = '/signIn';
-                }
-            }
-        }
-    );
-
-    Vue.component('button-fgt-pass',{
-            template:'<button class="signIn_btn" v-on:click="signInHandler">Confirm</button>',
-            methods:{
-                signInHandler(){
-                    window.location.href = '/signIn';
-                }
-            }
-        }
-    );
-
     Vue.component('signIn',{
-            props:['username','password'],
             template:'<div id="signIn">' +
-                        '<input type="text"  class="qxs-ic_user qxs-icon" v-model="username" placeholder="USERNAME">' +
-                        '<input type="text"  class="qxs-ic_password qxs-icon" v-model="password" placeholder="PASSWORD">' +
-                        '<button-sign-in></button-sign-in>' +
-                     '</div>'
+                        '<input type="text" ref="username" class="qxs-ic_user qxs-icon" placeholder="USERNAME">' +
+                        '<input type="text" ref="password" class="qxs-ic_password qxs-icon" placeholder="PASSWORD">' +
+                        '<button class="signIn_btn" v-on:click="signInHandler">Confirm</button>' +
+                     '</div>',
+            methods:{
+                signInHandler(){
+                    let username = this.$refs.username.value;
+                    let password = this.$refs.password.value;
+                    window.location.href = '/signIn?username='+username+'&password='+password;
+                }
+            }
         }
     )
 
@@ -76,8 +52,13 @@
                         '<input type="text"  class="qxs-ic_password qxs-icon"  placeholder="PASSWORD">' +
                         '<input type="text"  class="qxs-ic_password qxs-icon"  placeholder="REPEAT PASSWORD">' +
                         '<input type="text"  class="qxs-ic_password qxs-icon"  placeholder="EMAIL ADDRESS">' +
-                        '<button-sign-up></button-sign-up>' +
-                     '</div>'
+                        '<button class="signIn_btn" v-on:click="signInHandler">Confirm</button>' +
+                     '</div>',
+            methods:{
+                signInHandler(){
+                    window.location.href = '/signIn';
+                }
+            }
         }
     )
 
@@ -93,11 +74,8 @@
         el: '#singInForm',
         data: {
             title:'E-MENTAL',
-            username: '',
-            password: '',
             target: 'signIn'
         }
     });
 </script>
-
 </html>

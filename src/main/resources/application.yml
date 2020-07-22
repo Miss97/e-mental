@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    driver-class-name: org.sqlite.JDBC
+    url: jdbc:sqlite:C:\Users\mu20101\AppData\Local\Packages\CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc\LocalState\rootfs\tmp\sqlite-autoconf-3320300\emental.db
+
+server:
+  port: 8080
+
+mybatis:
+  type-aliases-package: com.emental.dao.entity

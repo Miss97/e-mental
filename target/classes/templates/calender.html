@@ -1,61 +1,17 @@
-<style>
-    .calendar{
-        width:100%;
-        height:100%;
-    }
-    .body-list ul{
-        width:100%;
-        font-family:arial;
-        font-weight:bold;
-        font-size:14px;
-    }
-    .body-list ul li{
-        width:14.28%;
-        height:36px;
-        line-height:36px;
-        list-style-type:none;
-        display:block;
-        box-sizing:border-box;
-        float:left;
-        text-align:center;
-    }
-
-    .lightgrey{
-        color:#a8a8a8;
-    }
-    .darkgrey{
-        color:#565656;
-    }
-    .green{
-        color:#6ac13c;
-    }
-
-    a{
-        text-decoration: none;
-        font-weight: bold;
-    }
-
-    .month {
-        color:#6ac13c;
-        font-size: 50px;
-    }
-
-    .year {
-        color:#6ac13c;
-        font-size: 70px;
-    }
-
-</style>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="css/calender.css">
+</head>
 <div class="calendar">
     <div class="title" style="width:100%;height:300px;text-align:center;margin:0 auto;">
-        <span>
+        <span style="font-size: 50px;">
             <a href="" id="prev">&lt;</a>
         </span>
-        <span>
+        <span style="width:500px; display:inline-block;">
             <a class="month" id="calendar-title">Month</a>
             <a class="year small" id="calendar-year">Year</a>
         </span>
-        <span>
+        <span style="font-size: 50px;">
             <a href="" id="next">&gt;</a>
         </span>
     </div>
@@ -79,9 +35,9 @@
     </div>
 </div>
 <script>
-    var month_olympic = [31,29,31,30,31,30,31,31,30,31,30,31];
-    var month_normal = [31,28,31,30,31,30,31,31,30,31,30,31];
-    var month_name = ["January","Febrary","March","April","May","June","July","Auguest","September","October","November","December"];
+    const month_olympic = [31,29,31,30,31,30,31,31,30,31,30,31];
+    const month_normal = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    const month_name = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
 
     var holder = document.getElementById("days");
     var prev = document.getElementById("prev");
@@ -151,3 +107,4 @@
         refreshDate();
     }
 </script>
+</html>

@@ -1,47 +1,51 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:v-bind="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>E-mental</title>
     <link rel="stylesheet" type="text/css" href="css/welcome_style.css">
 </head>
 <body>
-<!--side bar-->
-<div id="mySidenav" class="sidenav">
-    <a id="unFoldBtn" href="javascript:void(0)" class="foldBtn" onclick="openNav()">&#9776;</a>
-    <a id="foldBtn" href="javascript:void(0)" class="foldBtn" onclick="closeNav()">&#9776;</a>
-    <a href="#">Dashboard</a>
-    <a href="#">Mood Diary</a>
-    <a href="#">Calendar</a>
-    <a href="#">Reflection</a>
-    <a href="#">Lifestyle Helper</a>
-    <a href="#">Recommendation</a>
+<div id="welcome">
+    <!--side bar-->
+    <div id="mySidenav" class="sidenav">
+        <a id="foldBtn" class="foldBtn" @click.prevent="foldNav">&#9776;</a>
+        <a href="#" @click.prevent="target='/getDashboard'">Dashboard</a>
+        <a href="#" @click.prevent="target='/getMoodDiary'">Mood Diary</a>
+        <a href="#" @click.prevent="target='/getCalender'">Calendar</a>
+        <a href="#" @click.prevent="target='/getReflection'">Reflection</a>
+        <a href="#" @click.prevent="target='/getLifestyleHelper'">Lifestyle Helper</a>
+        <a href="#" @click.prevent="target='/getRecommendation'">Recommendation</a>
+    </div>
+    <div id="main" >
+        <iframe v-bind:src="target" width="100%" height="100%" frameborder="0" scrolling="no"></iframe>
+    </div>
 </div>
-
-<div id="main" >
-        <iframe src="/getCalender" width="100%" height="100%" frameborder="0" scrolling="no"></iframe>
-</div>
-
 </body>
 
 <script th:src="@{scripts/vue.min.js}"></script>
 <script type="text/javascript">
-    window.onload=function(){
-        document.getElementById("foldBtn").style.display = "none";
-    }
-
-    function openNav() {
-        document.getElementById("mySidenav").style.width = "300px";
-        document.getElementById("unFoldBtn").style.display = "none";
-        document.getElementById("foldBtn").style.display = "";
-    }
-    function closeNav() {
-        document.getElementById("mySidenav").style.width = "50px";
-        document.getElementById("unFoldBtn").style.display = "";
-        document.getElementById("foldBtn").style.display = "none";
-    }
-
+    const app = new Vue({
+        el:'#welcome',
+        data:{
+            isFolded:false,
+            html:null,
+            target:'/getCalender'
+        },
+        methods:{
+            foldNav() {
+                if (!this.isFolded){
+                    document.getElementById("mySidenav").style.width = "300px";
+                    this.isFolded = true;
+                } else {
+                    document.getElementById("mySidenav").style.width = "50px";
+                    this.isFolded = false;
+                }
+            }
+        }
+    })
 </script>
 
 </html>
