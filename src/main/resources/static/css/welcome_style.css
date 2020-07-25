@@ -10,25 +10,27 @@ body {
     z-index: 1;
     top: 0;
     left: 0;
-    background-color: #DCDCDC;
+    background-color: #FFE4E1;
     overflow-x: hidden;
     transition: 0.5s;
     padding-top: 60px;
+    border-right:1px solid #FFDAB9;
 }
 
 .sidenav a {
-    padding: 8px 8px 8px;
-    margin-left: 50px;
+    padding: 8px 8px 8px 50px;
     text-decoration: none;
     font-size: 25px;
-    color: #696969;
+    color: #5E5E5E;
     display: block;
     white-space: nowrap;
     transition: 0.3s;
 }
 
 .sidenav a:hover, .offcanvas a:focus{
-    color: #A9A9AB;
+    color: #2F4F4F;
+    background: #C1CDCD;
+    transition: 0.3s;
 }
 
 .sidenav .foldBtn {
@@ -37,18 +39,50 @@ body {
     right:5px;
 }
 
+.sidenav .foldBtn:hover{
+    background: #FFE4E1;
+}
+
+.sidenav .userInfo {
+    padding-left: 50px;
+    padding-top: 27px;
+    height: 100px;
+    background: #FFE4E1;
+}
+
+.sidenav .menuIcon {
+    margin-left: -40px;
+    margin-bottom: -5px;
+    margin-right: 10px;
+    width: 30px;
+    height: 30px;
+}
+
 #main {
     height: 100%;
-    width: 100%;
+    width: 95%;
     position: fixed;
     z-index: 0;
     top: 0;
+    left: 50px;
     transition: margin-left .5s;
     padding: 16px;
-    background-color: #FFF5EE;
+
+    background: linear-gradient(125deg, #FFFFFF,#FFF0F5,#FFE4E1,#DB7093);
+    animation: bgSize 10s infinite ease-in-out alternate;
 }
 
 @media screen and (max-height: 450px) {
     .sidenav {padding-top: 15px;}
     .sidenav a {font-size: 18px;}
+}
+
+
+@keyframes bgSize {
+    0% {
+        background-size: 300% 100%;
+    }
+    100% {
+        background-size: 100% 100%;
+    }
 }

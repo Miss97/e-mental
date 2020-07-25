@@ -11,28 +11,35 @@
 <div id="welcome">
     <!--side bar-->
     <div id="mySidenav" class="sidenav">
-        <a id="foldBtn" class="foldBtn" @click.prevent="foldNav">&#9776;</a>
-        <a href="#" @click.prevent="target='/getDashboard'">Dashboard</a>
-        <a href="#" @click.prevent="target='/getMoodDiary'">Mood Diary</a>
-        <a href="#" @click.prevent="target='/getCalender'">Calendar</a>
-        <a href="#" @click.prevent="target='/getReflection'">Reflection</a>
-        <a href="#" @click.prevent="target='/getLifestyleHelper'">Lifestyle Helper</a>
-        <a href="#" @click.prevent="target='/getRecommendation'">Recommendation</a>
+        <a href="#" id="foldBtn" class="foldBtn" @click.prevent="foldNav">&#9776;</a>
+        <a href="#" @click.prevent="target='/getUserInfo'"><img class="menuIcon" src="../static/imgs/ic_user_main.png" th:src="@{imgs/ic_user_main.png}"/>User Info</a>
+        <a href="#" @click.prevent="target='/getDashboard'"><img class="menuIcon" src="../static/imgs/ic_dashboard_main.png" th:src="@{imgs/ic_dashboard_main.png}"/>Dashboard</a>
+        <a href="#" @click.prevent="target='/getMoodDiary'"><img class="menuIcon" src="../static/imgs/ic_diary_main.png" th:src="@{imgs/ic_diary_main.png}"/>Mood Diary</a>
+        <a href="#" @click.prevent="target='/getCalender'"><img class="menuIcon" src="../static/imgs/ic_calendar_main.png" th:src="@{imgs/ic_calendar_main.png}"/>Calendar</a>
+        <a href="#" @click.prevent="target='/getReflection'"><img class="menuIcon" src="../static/imgs/ic_reflection_main.png" th:src="@{imgs/ic_reflection_main.png}"/>Reflection</a>
+        <a href="#" @click.prevent="target='/getLifestyleHelper'"><img class="menuIcon" src="../static/imgs/ic_lifestyle_main.png" th:src="@{imgs/ic_lifestyle_main.png}"/>Lifestyle Helper</a>
+        <a href="#" @click.prevent="target='/getRecommendation'"><img class="menuIcon" src="../static/imgs/ic_recommendation_main.png" th:src="@{imgs/ic_recommendation_main.png}"/>Recommendation</a>
     </div>
     <div id="main" >
-        <iframe v-bind:src="target" width="100%" height="100%" frameborder="0" scrolling="no"></iframe>
+        <iframe v-bind:src="target" width="100%" height="100%" frameborder="0"></iframe>
     </div>
 </div>
 </body>
 
 <script th:src="@{scripts/vue.min.js}"></script>
 <script type="text/javascript">
+    if (window != top)
+        top.location.href = location.href;
     const app = new Vue({
         el:'#welcome',
         data:{
             isFolded:false,
-            html:null,
-            target:'/getCalender'
+            target:'/getDashboard'
+        },
+        mounted(){
+            window.addEventListener("message", function(data) {
+                app.target = data.data.target;
+            })
         },
         methods:{
             foldNav() {
@@ -43,7 +50,8 @@
                     document.getElementById("mySidenav").style.width = "50px";
                     this.isFolded = false;
                 }
-            }
+            },
+
         }
     })
 </script>

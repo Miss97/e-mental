@@ -11,8 +11,8 @@ public class SignInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String sessionId = request.getSession().getId();
-        if (sessionId==null){
+        String username = (String) request.getSession().getAttribute("username");
+        if (username==null){
             response.sendRedirect("/");
             return false;
         }

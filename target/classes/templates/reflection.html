@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-3.3.4.css">
+    <link rel="stylesheet" type="text/css" href="css/dashboard_style.css">
+</head>
+<body>
+
+<div class="wrapper wrapper-content">
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>Self—RatingDepression Scale</h5>
+                </div>
+                <div class="ibox-content">
+                    <img width="100%" height="auto" src="../static/imgs/pics/pic_mood_main.jpeg" th:src="@{imgs/pics/pic_mood_main.jpeg}"/>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5 style="text-align: center">Inspiration Quiz</h5>
+                </div>
+                <div class="ibox-content">
+                    <img width="100%" height="auto" src="../static/imgs/pics/pic_quiz_main.jpg" th:src="@{imgs/pics/pic_quiz_main.jpg}"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-3.3.4.css">
+    <link rel="stylesheet" type="text/css" href="css/dashboard_style.css">
+</head>
+<body>
+
+<div id="userInfo" class="wrapper wrapper-content">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>My Information</h5>
+                </div>
+                <div class="ibox-content">
+                    <h3>USERNAME :{{username}}</h3>
+                    <h3>REALNAME :{{realname}}</h3>
+                    <h3>GENDER   :{{gender}}</h3>
+                    <h3>BIRTHDATE:{{birthDate}}</h3>
+                    <h3>EMAIL    :{{email}}</h3>
+                    <h3>PHONE    :{{phone}}</h3>
+                    <h3>INFO     :{{info}}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:src="@{scripts/vue.min.js}"></script>
+<script th:src="@{scripts/vue-resource.min.js}"></script>
+<script>
+
+    const app = new Vue({
+        el:'#userInfo',
+        data:{
+            username:null,
+            realname:null,
+            gender:null,
+            birthDate:null,
+            email:null,
+            phone:null,
+            info:null
+        },
+        mounted:function(){
+            this.getUserInfo();
+        },
+        methods:{
+            getUserInfo(){
+                //发送get请求
+                this.$http.post('/getUserInfoDtl').then(function(res){
+                    this.username = res.data.data.username;
+                    this.realname = res.data.data.realName;
+                    this.gender = res.data.data.gender;
+                    this.birthDate = res.data.data.birthDate;
+                    this.email = res.data.data.emailAddress;
+                    this.phone = res.data.data.phoneNumber;
+                    this.info = res.data.data.personInfo;
+                },function(){
+                    console.log('Failed');
+                });
+            }
+        }
+
+    })
+
+</script>
+</body>
+</html>

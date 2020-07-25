@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-3.3.4.css">
+    <link rel="stylesheet" type="text/css" href="css/dashboard_style.css">
+</head>
+<body>
+
+<div id="weeklyMood" class="wrapper wrapper-content">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>Mood line chart last 7 days</h5>
+                </div>
+                <div class="ibox-content">
+                    <canvas id="mc" width="1000" height="500"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:src="@{scripts/vue.min.js}"></script>
+<script th:src="@{scripts/vue-resource.min.js}"></script>
+<script>
+    const app = new Vue({
+        el:'#weeklyMood',
+        data:{
+        },
+        mounted:function(){
+            this.getUserInfo();
+        },
+        methods:{
+            getUserInfo(){
+                //发送get请求
+                this.$http.post('/getLast7Mood').then(function(res){
+                    this.drawLineChart(res.data.data);
+                },function(){
+                    console.log('Failed');
+                });
+            },
+
+            drawLineChart(moodData){
+                let moodImgSrc = {0:'imgs/ic_mood_bad.png',1:'imgs/ic_mood_normal.png',2:'imgs/ic_mood_happy.png',3:'imgs/ic_mood_ecstasy.png'};
+
+                let canvas=document.getElementById('mc');
+                let ctx=canvas.getContext('2d');
+
+
+                //border
+                ctx.lineWidth=1;
+                ctx.moveTo(30,20);
+                ctx.lineTo(30,410);
+                ctx.lineTo(700,410);
+                for(let i=0;i<3;i++)
+                {
+                    ctx.moveTo(30,50+120*i);
+                    ctx.lineTo(700,50+120*i);
+                }
+
+                ctx.strokeStyle="#999";
+                ctx.font = "24px bold";
+
+                let i=0;
+                let sum = 0;
+                ctx.moveTo(30,410);
+                for(let mood in moodData){
+                    let x = 30+i*100;
+                    let y = 410-120*moodData[mood];
+                    ctx.lineTo(x,y);
+
+                    let moodImg = new Image();
+                    moodImg.src = moodImgSrc[moodData[mood]];
+                    moodImg.onload = function(){
+                        ctx.drawImage(moodImg,x-15,y-15,30,30);
+                    }
+                    ctx.fillText(mood, x, 450);
+                    i++;
+                    sum += moodData[mood];
+                }
+
+                let moodImg = new Image();
+                moodImg.src = moodImgSrc[Math.trunc(sum/i+0.5)];
+
+                moodImg.onload = function(){
+                    ctx.drawImage(moodImg,800,100,200,200);
+                }
+
+                ctx.stroke();
+            }
+        }
+    })
+
+</script>
+</body>
+</html>

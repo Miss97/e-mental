@@ -8,3 +8,5 @@ server:
 
 mybatis:
   type-aliases-package: com.emental.dao.entity
+  configuration:
+    map-underscore-to-camel-case: true

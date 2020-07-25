@@ -1,0 +1,202 @@
+body {
+    background-color:transparent;
+}
+
+/* WRAPPERS */
+#wrapper {
+    width: 100%;
+    overflow-x: hidden;
+    background-color: #2f4050;
+}
+
+.wrapper {
+    padding: 0 20px;
+}
+
+.wrapper-content {
+    padding: 20px;
+}
+
+#page-wrapper {
+    padding: 0 15px;
+    position: inherit;
+    margin: 0 0 0 220px;
+}
+
+.title-action {
+    text-align: right;
+    padding-top: 30px;
+}
+
+/* IBOX */
+.ibox-content h1,
+.ibox-content h2,
+.ibox-content h3,
+.ibox-content h4,
+.ibox-content h5,
+.ibox-title h1,
+.ibox-title h2,
+.ibox-title h3,
+.ibox-title h4,
+.ibox-title h5 {
+    margin-top: 5px;
+}
+.ibox-content p {
+    margin-top: 5px;
+    font-size: 20px;
+}
+
+.ibox-content .text-box {
+    resize:none;
+    width: 100%;
+    height: 700px;
+    overflow: auto;
+    word-break: break-all;
+    padding: 30px;
+    border: solid 1px #DEE5E7;
+    border-radius: 5px;
+    outline: none;
+/*  background-image: url("../imgs/pics/pic_notebook.jpg");
+    background-size: 100%;*/
+    font-size: 30px;
+    font-family: Centaur, serif;
+}
+
+.ibox-content .submit-button {
+    float: right;
+    margin-top: 5px;
+    margin-right: 10px;
+    width: 100px;
+    height: 30px;
+    font-size: 16px;
+    color: #FFFFFF;
+    background-color: #B9B9B9;
+    border:none;
+    outline:none;
+    border-radius:20px;
+}
+
+.ibox-content .submit-button:hover {
+    background-color: #515151;
+    transition: 0.3s;
+}
+
+.mood-icon {
+    margin-top: 5px;
+    margin-right: 5px;
+    width: 30px;
+    height: 30px;
+    opacity:0.4;
+}
+
+.mood-icon:hover {
+    opacity:1;
+    transition: 0.3s;
+}
+
+.ibox {
+    margin-bottom: 20px;
+    background-color: #FFFFFF;
+    border: 1px solid #DEE5E7;
+    border-radius: 4px;
+    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+}
+
+.ibox.collapsed .ibox-content {
+    display: none;
+}
+
+.ibox.collapsed .fa.fa-chevron-up:before {
+    content: "\f078";
+}
+
+.ibox.collapsed .fa.fa-chevron-down:before {
+    content: "\f077";
+}
+
+.ibox:after,
+.ibox:before {
+    display: table;
+}
+
+.ibox-title {
+    height: 41px;
+    border-color: #edf1f2;
+    background-color: #f6f8f8;
+    color: #333;
+    font-weight: 700;
+    border-radius: 2px 2px 0 0;
+    padding: 15px 15px 3px 15px;
+    border-bottom: 1px solid transparent;
+    display: block;
+    clear: both;
+}
+
+.ibox-content {
+    background-color: #FFFFFF;
+    color: inherit;
+    padding: 15px 20px 20px 20px;
+    border-color: #E7EAEC;
+    -webkit-border-image: none;
+    -o-border-image: none;
+    border-image: none;
+    border-style: solid solid none;
+    border-width: 1px 0px;
+}
+
+.ibox-content {
+    clear: both;
+}
+
+.ibox-heading {
+    background-color: #F3F6FB;
+    border-bottom: none;
+}
+
+.ibox-heading h3 {
+    font-weight: 200;
+    font-size: 24px;
+}
+
+.ibox-title h5 {
+    display: inline-block;
+    font-size: 14px;
+    margin: 0 0 7px;
+    padding: 0;
+    text-overflow: ellipsis;
+    float: left;
+}
+
+.ibox-title .label {
+    float: left;
+    margin-left: 4px;
+}
+
+.ibox-tools {
+    display: inline-block;
+    float: right;
+    margin-top: 0;
+    position: relative;
+    padding: 0;
+}
+
+.ibox-tools a {
+    cursor: pointer;
+    margin-left: 5px;
+    color: #C4C4C4;
+}
+
+.ibox-tools a.btn-primary {
+    color: #FFFFFF;
+}
+
+.ibox-tools .dropdown-menu>li>a {
+    padding: 4px 10px;
+    font-size: 12px;
+}
+
+.ibox .open>.dropdown-menu {
+    left: auto;
+    right: 0;
+}

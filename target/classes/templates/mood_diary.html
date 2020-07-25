@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <title>Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-3.3.4.css">
+    <link rel="stylesheet" type="text/css" href="css/dashboard_style.css">
+</head>
+<body>
+
+<div id="moodDiary" class="wrapper wrapper-content">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>Mood Diary</h5>
+                    <h5 style="float:right">Notify me
+                        <input style="margin-top:2px; margin-left: 5px;float:right" v-model="notifyFlg" type="checkbox">
+                    </h5>
+                </div>
+                <div class="ibox-content">
+                    <textarea maxlength="4000" class="text-box" v-model="content"></textarea>
+                    <a href="#" @click.prevent="setMoodStatus('0')"><img class="mood-icon" :style="{'opacity':(status=='0'?'1':'0.4')}" src="../static/imgs/ic_mood_bad.png" th:src="@{imgs/ic_mood_bad.png}"/></a>
+                    <a href="#" @click.prevent="setMoodStatus('1')"><img class="mood-icon" :style="{'opacity':(status=='1'?'1':'0.4')}" src="../static/imgs/ic_mood_normal.png" th:src="@{imgs/ic_mood_normal.png}"/></a>
+                    <a href="#" @click.prevent="setMoodStatus('2')"><img class="mood-icon" :style="{'opacity':(status=='2'?'1':'0.4')}" src="../static/imgs/ic_mood_happy.png" th:src="@{imgs/ic_mood_happy.png}"/></a>
+                    <a href="#" @click.prevent="setMoodStatus('3')"><img class="mood-icon" :style="{'opacity':(status=='3'?'1':'0.4')}" src="../static/imgs/ic_mood_ecstasy.png" th:src="@{imgs/ic_mood_ecstasy.png}"/></a>
+                    <button class="submit-button" v-on:click="submit">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:src="@{scripts/vue.min.js}"></script>
+<script th:src="@{scripts/vue-resource.min.js}"></script>
+<script>
+
+    const app = new Vue({
+        el:'#moodDiary',
+        data:{
+            content:null,
+            status:null,
+            updateFlg:false,
+            notifyFlg:true
+        },
+        mounted:function(){
+          this.getMoodDiary();
+          this.$watch("notifyFlg", function (newValue, oldValue) {
+              console.log(this.notifyFlg);
+          })
+        },
+        methods:{
+            setMoodStatus(status){
+                this.status = status;
+            },
+            getMoodDiary(){
+                //发送get请求
+                this.$http.post('/getMoodDiaryContent').then(function(res){
+                    this.content = res.data.data.content;
+                    this.status = res.data.data.status;
+                    this.updateFlg = res.data.data.updateFlg;
+                },function(){
+                    console.log('Failed');
+                });
+            },
+            submit(){
+                let data = {content:this.content,status:this.status,updateFlg:this.updateFlg};
+                //发送get请求
+                this.$http.post('/saveMoodDiary',data,{
+                    emulateJSON: true
+                }).then(function(res){
+                    this.updateFlg = true;
+                    alert("Wish you have a good mood!")
+                },function(){
+                    console.log('Failed');
+                });
+            }
+        }
+
+    })
+
+</script>
+</body>
+</html>
