@@ -12,10 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 public class MenuController {
@@ -67,8 +64,12 @@ public class MenuController {
 
     @RequestMapping("/getWeeklyMood")
     public String getWeeklyMood(){
-
         return "weekly_mood";
+    }
+
+    @RequestMapping("/getSelfRatDepScale")
+    public String getSelfRatDepScale(){
+        return "self_rat_dep_scale";
     }
 
     @RequestMapping("/getLast7Mood")
@@ -76,12 +77,12 @@ public class MenuController {
     public JsonResult getLast7Mood() throws ParseException {
         String username = BaseInfoGenUtil.getUsername();
         List<EmMoodDiary> moodDiaries = emMoodDiaryMapper.getLast7Mood(username);
-        Map<String,String> last7MoodMap = new HashMap<>();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM");
+        Map<String,String> last7MoodMap = new LinkedHashMap<>();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM",Locale.ENGLISH);
         SimpleDateFormat sdf2 = new SimpleDateFormat("yyyyMMdd");
         for (EmMoodDiary moodDiary:moodDiaries){
-            Date date = sdf2.parse(moodDiary.getCreateDate());
-            last7MoodMap.put(sdf.format(date),moodDiary.getMoodStatus());
+            if (null!=moodDiary.getCreateDate())
+                last7MoodMap.put(sdf.format(sdf2.parse(moodDiary.getCreateDate())),moodDiary.getMoodStatus());
         }
         JsonResult jr = new JsonResult();
         jr.setData(last7MoodMap);
@@ -94,7 +95,6 @@ public class MenuController {
     public JsonResult getUserInfoDtl(){
         String username = BaseInfoGenUtil.getUsername();
         EmUserInfo userInfo = emUserInfoMapper.getUserInfo(username);
-        Map<String,String> result = new HashMap<>();
         JsonResult jr = new JsonResult();
         jr.setData(userInfo);
         jr.setMessage("success");
@@ -104,42 +104,36 @@ public class MenuController {
 
     @RequestMapping("/getMoodDiaryContent")
     @ResponseBody
-    public JsonResult getMoodDiaryContent(){
+    public JsonResult getMoodDiaryContent() throws ParseException {
         String username = BaseInfoGenUtil.getUsername();
-        String nowDate = BaseInfoGenUtil.getNowDate();
-        EmMoodDiary moodDiary = emMoodDiaryMapper.getOneByUsername(username,nowDate);
-        Map<String,String> result = new HashMap<>();
-        if (moodDiary == null){
-            result.put("updateFlg","false");
-        }else{
-            result.put("updateFlg","true");
-            result.put("content",moodDiary.getContent());
-            result.put("status",moodDiary.getMoodStatus());
+        List<EmMoodDiary> moodDiaries = emMoodDiaryMapper.getListByUsername(username);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss",Locale.ENGLISH);
+        SimpleDateFormat sdf2 = new SimpleDateFormat("yyyyMMddHHmmss");
+        for (EmMoodDiary diary:moodDiaries){
+            if (null!=diary.getCreateTime())
+                diary.setCreateTime(sdf.format(sdf2.parse(diary.getCreateTime())));
         }
         JsonResult jr = new JsonResult();
-        jr.setData(result);
+        jr.setData(moodDiaries);
         jr.setMessage("success");
         return jr;
     }
 
     @RequestMapping("/saveMoodDiary")
     @ResponseBody
-    public JsonResult saveMoodDiary(String content,String status,boolean updateFlg){
+    public JsonResult saveMoodDiary(String content,String status){
         String username = BaseInfoGenUtil.getUsername();
         String nowDate = BaseInfoGenUtil.getNowDate();
-
-        if (updateFlg){
-            emMoodDiaryMapper.update(username,nowDate,content,status);
-        } else {
-            String dataId = BaseInfoGenUtil.getDataId(32);
-            EmMoodDiary moodDiary = new EmMoodDiary();
-            moodDiary.setDataId(dataId);
-            moodDiary.setUsername(username);
-            moodDiary.setContent(content);
-            moodDiary.setMoodStatus(status);
-            moodDiary.setCreateDate(nowDate);
-            emMoodDiaryMapper.insert(moodDiary);
-        }
+        String nowTime = BaseInfoGenUtil.getNowTimestamp();
+        String dataId = BaseInfoGenUtil.getDataId(32);
+        EmMoodDiary moodDiary = new EmMoodDiary();
+        moodDiary.setDataId(dataId);
+        moodDiary.setUsername(username);
+        moodDiary.setContent(content);
+        moodDiary.setMoodStatus(status);
+        moodDiary.setCreateDate(nowDate);
+        moodDiary.setCreateTime(nowTime);
+        emMoodDiaryMapper.insert(moodDiary);
 
         JsonResult jr = new JsonResult();
         jr.setData(null);

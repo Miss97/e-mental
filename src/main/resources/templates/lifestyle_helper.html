@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org" xmlns:v-on="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
     <title>Dashboard</title>
@@ -19,24 +19,22 @@
                 <div class="ibox-content">
                     <span>Today's Weight: </span><input>
                 </div>
-            </div>
-        </div>
-        <div class="col-sm-12">
-            <div class="ibox">
-                <div class="ibox-title">
+
+                <div class="ibox-title" style="margin-top: 10px;">
                     <h5>Record your weekly exercise</h5>
                 </div>
                 <div class="ibox-content">
                 </div>
-            </div>
-        </div>
-        <div class="col-sm-12">
-            <div class="ibox">
-                <div class="ibox-title">
+
+                <div class="ibox-title" style="margin-top: 10px;">
                     <h5>Record your sleeping hours</h5>
                 </div>
                 <div class="ibox-content">
                     <span>Hours slept last night: {{sleptHours}} hours</span><input id="range" type="range" value="5" min="0" max="24" v-model="sleptHours">
+                </div>
+
+                <div class="ibox-content">
+                    <button class="submit-button" v-on:click="submit">Submit</button>
                 </div>
             </div>
         </div>
@@ -54,7 +52,9 @@
 
         },
         methods:{
+            submit(){
 
+            }
         }
     })
 

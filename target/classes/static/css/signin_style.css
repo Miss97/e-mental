@@ -29,9 +29,17 @@
     background: url("../imgs/ic_user.png") no-repeat 3%;
     background-size: 15px 15px;
 }
+
 .qxs-ic_password {
     outline:none;
     background: url("../imgs/ic_password.png") no-repeat 3%;
+    background-size: 15px 15px;
+    margin-bottom: 20px;
+}
+
+.qxs-ic_mail {
+    outline:none;
+    background: url("../imgs/ic_mail.png") no-repeat 3%;
     background-size: 15px 15px;
     margin-bottom: 20px;
 }

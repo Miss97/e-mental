@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <title>Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-3.3.4.css">
+    <link rel="stylesheet" type="text/css" href="css/dashboard_style.css">
+</head>
+<body>
+
+<div id="srdc" class="wrapper wrapper-content">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>Self—RatingDepression Scale</h5>
+                </div>
+                <div class="ibox-content">
+                    <h1 style="text-align: center">
+                        Your score is <span style="color: red;">{{result}}</span> out of a possible 80
+                    </h1>
+                </div>
+                <div class="ibox-content" style="margin:15px;border: 1px solid #c0c0c0;border-radius: 10px;">
+                    <div class="row">
+                        <div class="col-sm-4">
+                        </div>
+                        <div class="col-sm-2" style="display:inline-block;">
+                            <span style="margin-top:10px;">A Little Of The Time</span>
+                        </div>
+                        <div class="col-sm-2" style="display:inline-block;">
+                            <span style="margin-top:10px;">Some Of The Time</span>
+                        </div>
+                        <div class="col-sm-2" style="display:inline-block;">
+                            <span style="margin-top:10px;">Good Part Of The Time</span>
+                        </div>
+                        <div class="col-sm-2" style="display:inline-block;">
+                            <span style="margin-top:10px;">Most Of The Time</span>
+                        </div>
+                    </div>
+                    <div v-for="item in options">
+                        <div class="row" style="border: 1px solid #c0c0c0;margin-top: -1px;">
+                            <div class="col-sm-4">
+                                <h4>{{item.title}}</h4>
+                            </div>
+                            <div class="col-sm-2">
+                                <input style="margin-top:10px;" type="radio" v-model="item.score" :value="item.type=='1'?1:4">
+                            </div>
+                            <div class="col-sm-2">
+                                <input style="margin-top:10px;" type="radio" v-model="item.score" :value="item.type=='1'?2:3">
+                            </div>
+                            <div class="col-sm-2">
+                                <input style="margin-top:10px;" type="radio" v-model="item.score" :value="item.type=='1'?3:2">
+                            </div>
+                            <div class="col-sm-2">
+                                <input style="margin-top:10px;" type="radio" v-model="item.score" :value="item.type=='1'?4:1">
+                            </div>
+                        </div>
+                    </div>
+                    <button class="submit-button" v-on:click="calculatorScore">submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:src="@{scripts/vue.min.js}"></script>
+<script>
+    let app = new Vue({
+        el:'#srdc',
+        data:{
+            result:0,
+            options:[
+                {type:1,score:0,title:'1. I feel down hearted and blue.'},
+                {type:2,score:0,title:'2. Morning is when I feel the best.'},
+                {type:1,score:0,title:'3. I have crying spells or feel like it.'},
+                {type:1,score:0,title:'4. I have trouble sleeping at night.'},
+                {type:2,score:0,title:'5. I eat as much as I used to.'},
+                {type:2,score:0,title:'6. I still enjoy sex.'},
+                {type:1,score:0,title:'7. I notice that I am losing weight.'},
+                {type:1,score:0,title:'8. I have trouble with constipation.'},
+                {type:1,score:0,title:'9. My heart beats faster than usual.'},
+                {type:1,score:0,title:'10. I get tired for no reason.'},
+                {type:2,score:0,title:'11. My mind is as clear as it used to be.'},
+                {type:2,score:0,title:'12. I find it easy to do the things I used to.'},
+                {type:1,score:0,title:'13. I am restless and can’t keep still.'},
+                {type:2,score:0,title:'14. I feel hopeful about the future.'},
+                {type:1,score:0,title:'15. I am more irritable than usual.'},
+                {type:2,score:0,title:'16. I find it easy to make decisions.'},
+                {type:2,score:0,title:'17. I feel that I am useful and needed.'},
+                {type:2,score:0,title:'18. My life is pretty full.'},
+                {type:1,score:0,title:'19. I feel that others would be better off if I were dead.'},
+                {type:2,score:0,title:'20. I still enjoy the things I used to do.'}
+            ]
+        },
+        methods:{
+            calculatorScore(){
+                let score = 0;
+                for(let i in this.options){
+                    if (0===this.options[i].score){
+                        alert("There are unselected options!");
+                        return;
+                    }
+                    score+=Math.trunc(parseInt(this.options[i].score)*1.25+0.5);
+                }
+                this.result = score;
+            }
+        }
+    });
+</script>
+</body>
+</html>

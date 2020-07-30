@@ -17,7 +17,7 @@
                     <h5>Mood line chart last 7 days</h5>
                 </div>
                 <div class="ibox-content">
-                    <canvas id="mc" width="1000" height="500"></canvas>
+                    <canvas id="mc" width="1500" height="500"></canvas>
                 </div>
             </div>
         </div>
@@ -54,15 +54,15 @@
                 ctx.lineWidth=1;
                 ctx.moveTo(30,20);
                 ctx.lineTo(30,410);
-                ctx.lineTo(700,410);
+                ctx.lineTo(900,410);
                 for(let i=0;i<3;i++)
                 {
                     ctx.moveTo(30,50+120*i);
-                    ctx.lineTo(700,50+120*i);
+                    ctx.lineTo(900,50+120*i);
                 }
 
                 ctx.strokeStyle="#999";
-                ctx.font = "24px bold";
+                ctx.font = "20px bold";
 
                 let i=0;
                 let sum = 0;
@@ -79,14 +79,13 @@
                     }
                     ctx.fillText(mood, x, 450);
                     i++;
-                    sum += moodData[mood];
+                    sum += parseInt(moodData[mood]);
                 }
 
                 let moodImg = new Image();
                 moodImg.src = moodImgSrc[Math.trunc(sum/i+0.5)];
-
                 moodImg.onload = function(){
-                    ctx.drawImage(moodImg,800,100,200,200);
+                    ctx.drawImage(moodImg,1100,100,200,200);
                 }
 
                 ctx.stroke();

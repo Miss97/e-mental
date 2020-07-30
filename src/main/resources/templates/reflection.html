@@ -14,7 +14,7 @@
         <div class="col-sm-6">
             <div class="ibox">
                 <div class="ibox-title">
-                    <h5>Self—RatingDepression Scale</h5>
+                    <a href="#" onclick="openTarget('/getSelfRatDepScale')"><h5>Self—RatingDepression Scale</h5></a>
                 </div>
                 <div class="ibox-content">
                     <img width="100%" height="auto" src="../static/imgs/pics/pic_mood_main.jpeg" th:src="@{imgs/pics/pic_mood_main.jpeg}"/>
@@ -33,5 +33,13 @@
         </div>
     </div>
 </div>
+<script>
+    function openTarget(target){
+        window.parent.postMessage({  //参数是对象
+            cmd: 'message',
+            target: target
+        }, '*');
+    }
+</script>
 </body>
 </html>

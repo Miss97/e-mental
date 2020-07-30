@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:v-on="http://www.w3.org/1999/xhtml">
+      xmlns:v-on="http://www.w3.org/1999/xhtml"
+      xmlns:v-bind="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
     <title>Dashboard</title>
@@ -28,6 +29,24 @@
                     <a href="#" @click.prevent="setMoodStatus('3')"><img class="mood-icon" :style="{'opacity':(status=='3'?'1':'0.4')}" src="../static/imgs/ic_mood_ecstasy.png" th:src="@{imgs/ic_mood_ecstasy.png}"/></a>
                     <button class="submit-button" v-on:click="submit">Submit</button>
                 </div>
+                <div v-for="item in diaryData" :key="item.name">
+                    <div class="ibox-content">
+                        <h2>{{item.createTime}} : {{item.content}}
+                            <span v-if="item.moodStatus === '0'">
+                                <img class="mood-icon" style="float: right;opacity:1" src="../static/imgs/ic_mood_bad.png" th:src="@{imgs/ic_mood_bad.png}"/>
+                            </span>
+                            <span v-else-if="item.moodStatus === '1'">
+                                <img class="mood-icon" style="float: right;opacity:1" src="../static/imgs/ic_mood_bad.png" th:src="@{imgs/ic_mood_normal.png}"/>
+                            </span>
+                            <span v-else-if="item.moodStatus === '2'">
+                                <img class="mood-icon" style="float: right;opacity:1" src="../static/imgs/ic_mood_happy.png" th:src="@{imgs/ic_mood_happy.png}"/>
+                            </span>
+                            <span v-else-if="item.moodStatus === '3'">
+                                <img class="mood-icon" style="float: right;opacity:1" src="../static/imgs/ic_mood_ecstasy.png" th:src="@{imgs/ic_mood_ecstasy.png}"/>
+                            </span>
+                        </h2>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -40,8 +59,8 @@
         el:'#moodDiary',
         data:{
             content:null,
-            status:null,
-            updateFlg:false,
+            status:1,
+            diaryData:null,
             notifyFlg:true
         },
         mounted:function(){
@@ -55,23 +74,26 @@
                 this.status = status;
             },
             getMoodDiary(){
-                //发送get请求
                 this.$http.post('/getMoodDiaryContent').then(function(res){
-                    this.content = res.data.data.content;
-                    this.status = res.data.data.status;
-                    this.updateFlg = res.data.data.updateFlg;
+                    this.diaryData = res.data.data;
                 },function(){
                     console.log('Failed');
                 });
             },
             submit(){
-                let data = {content:this.content,status:this.status,updateFlg:this.updateFlg};
-                //发送get请求
+                if (this.content==null||''===this.content){
+                    alert("Illegal inputs!");
+                    return;
+                }
+                let data = {content:this.content,status:this.status};
                 this.$http.post('/saveMoodDiary',data,{
                     emulateJSON: true
                 }).then(function(res){
-                    this.updateFlg = true;
-                    alert("Wish you have a good mood!")
+                    this.content=null;
+                    this.status=1;
+                    this.diaryData=null;
+                    this.getMoodDiary();
+                    alert("Wish you have a good mood!");
                 },function(){
                     console.log('Failed');
                 });

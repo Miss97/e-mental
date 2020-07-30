@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org" xmlns:v-on="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
     <title>Dashboard</title>
@@ -24,6 +24,7 @@
                     <h3>EMAIL    :{{email}}</h3>
                     <h3>PHONE    :{{phone}}</h3>
                     <h3>INFO     :{{info}}</h3>
+                    <button class="signIn_btn" v-on:click="signOut">Sign Out</button>
                 </div>
             </div>
         </div>
@@ -61,6 +62,12 @@
                 },function(){
                     console.log('Failed');
                 });
+            },
+            signOut(){
+                window.parent.postMessage({  //参数是对象
+                    cmd: 'message',
+                    target: 'signOut'
+                }, '*');
             }
         }
 

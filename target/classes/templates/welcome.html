@@ -38,6 +38,8 @@
         },
         mounted(){
             window.addEventListener("message", function(data) {
+                if (data.data.target==='signOut')
+                    window.location.href = '/signOut';
                 app.target = data.data.target;
             })
         },

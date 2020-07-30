@@ -17,13 +17,13 @@ public interface EmMoodDiaryMapper {
     @Select("SELECT * FROM EM_MOOD_DIARY WHERE DATA_ID = #{dataId}")
     EmMoodDiary getOne(String dataId);
 
-    @Select("SELECT DATA_ID,USERNAME,CONTENT,MOOD_STATUS,CREATE_DATE FROM EM_MOOD_DIARY WHERE USERNAME = #{username} AND CREATE_DATE = #{createDate}")
-    EmMoodDiary getOneByUsername(String username,String createDate);
+    @Select("SELECT DATA_ID,USERNAME,CONTENT,MOOD_STATUS,CREATE_DATE,CREATE_TIME FROM EM_MOOD_DIARY WHERE USERNAME = #{username} ORDER BY CREATE_TIME DESC")
+    List<EmMoodDiary> getListByUsername(String username);
 
-    @Select("SELECT MOOD_STATUS,CREATE_DATE FROM EM_MOOD_DIARY WHERE USERNAME = #{username} ORDER BY CREATE_DATE DESC LIMIT 7")
+    @Select("SELECT REPLACE(CAST(Round(SUM(MOOD_STATUS)/COUNT(1)) AS TEXT),'.0','') AS MOOD_STATUS,CREATE_DATE FROM EM_MOOD_DIARY WHERE USERNAME = #{username} GROUP BY CREATE_DATE ORDER BY CREATE_DATE DESC LIMIT 7")
     List<EmMoodDiary> getLast7Mood(String username);
 
-    @Insert("INSERT INTO EM_MOOD_DIARY(DATA_ID,USERNAME,CONTENT,MOOD_STATUS,CREATE_DATE) VALUES(#{dataId},#{username},#{content},#{moodStatus},#{createDate})")
+    @Insert("INSERT INTO EM_MOOD_DIARY(DATA_ID,USERNAME,CONTENT,MOOD_STATUS,CREATE_DATE,CREATE_TIME) VALUES(#{dataId},#{username},#{content},#{moodStatus},#{createDate},#{createTime})")
     void insert(EmMoodDiary moodDiary);
 
     @Update("UPDATE EM_MOOD_DIARY SET CONTENT=#{content},MOOD_STATUS=#{status} WHERE USERNAME = #{username} AND CREATE_DATE = #{createDate}")

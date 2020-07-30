@@ -29,34 +29,137 @@
 </body>
 
 <script th:src="@{scripts/vue.min.js}"></script>
+<script th:src="@{scripts/vue-resource.min.js}"></script>
 <script type = "text/javascript">
     Vue.component('signIn',{
             template:'<div id="signIn">' +
                         '<input type="text" ref="username" class="qxs-ic_user qxs-icon" placeholder="USERNAME">' +
-                        '<input type="text" ref="password" class="qxs-ic_password qxs-icon" placeholder="PASSWORD">' +
+                        '<input type="password" ref="password" class="qxs-ic_password qxs-icon" placeholder="PASSWORD">' +
                         '<button class="signIn_btn" v-on:click="signInHandler">Confirm</button>' +
                      '</div>',
             methods:{
                 signInHandler(){
                     let username = this.$refs.username.value;
                     let password = this.$refs.password.value;
-                    window.location.href = '/signIn?username='+username+'&password='+password;
+                    if (username == null||'' === username||password == null||'' === password){
+                        alert("Illegal username or password!");
+                    }
+                    let data = {username:username,password:password};
+                    this.$http.post('/signInVerify',data,{
+                        emulateJSON: true
+                    }).then(function(res){
+                        if (res.data.message==="failed"){
+                            alert("Wrong username or password!");
+                        }else if(res.data.message==="success"){
+                            window.location.href = '/signIn';
+                        }else {
+                            alert("System Error!");
+                        }
+                    },function(){
+
+                    });
                 }
             }
         }
     )
 
     Vue.component('signUp',{
+            data: {
+                legalUsername:false,
+                legalPassword:false,
+                legalEmail:false
+            },
             template:'<div id="singUp">' +
-                        '<input type="text"  class="qxs-ic_user qxs-icon"  placeholder="USERNAME">' +
-                        '<input type="text"  class="qxs-ic_password qxs-icon"  placeholder="PASSWORD">' +
-                        '<input type="text"  class="qxs-ic_password qxs-icon"  placeholder="REPEAT PASSWORD">' +
-                        '<input type="text"  class="qxs-ic_password qxs-icon"  placeholder="EMAIL ADDRESS">' +
-                        '<button class="signIn_btn" v-on:click="signInHandler">Confirm</button>' +
+                        '<input type="text" @blur="usernameVerify" ref="username" class="qxs-ic_user qxs-icon"  placeholder="USERNAME">' +
+                        '<input type="password" ref="password" class="qxs-ic_password qxs-icon"  placeholder="PASSWORD">' +
+                        '<input type="password" @blur="passwordVerify" ref="passwordRe" @blur="passwordVerify" ref="passwordRe" class="qxs-ic_password qxs-icon"  placeholder="REPEAT PASSWORD">' +
+                        '<input type="email" @blur="emailVerify" ref="email" class="qxs-ic_mail qxs-icon"  placeholder="EMAIL ADDRESS">' +
+                        '<button class="signIn_btn" v-on:click="signUpHandler">Confirm</button>' +
                      '</div>',
             methods:{
-                signInHandler(){
-                    window.location.href = '/signIn';
+                usernameVerify(){
+                    let username = this.$refs.username.value
+                    let data = {username:username};
+                    if (null!=username&&''!==username){
+                        this.$http.post('/usernameVerify',data,{
+                            emulateJSON: true
+                        }).then(function(res){
+                            if (res.data.message==="failed"){
+                                alert("Username already in used!");
+                                this.$refs.username.value=null;
+                                this.legalUsername=false;
+                            }else if(res.data.message==="success"){
+                                this.legalUsername=true;
+                            }else {
+                                alert("System Error!");
+                                this.legalUsername=false;
+                            }
+                        },function(){
+
+                        });
+                    }
+                },
+                emailVerify(){
+                    let email = this.$refs.email.value
+                    let data = {email:email};
+                    if (null!=email&&''!==email){
+                        this.$http.post('/emailVerify',data,{
+                            emulateJSON: true
+                        }).then(function(res){
+                            if (res.data.message==="failed"){
+                                alert("Email already in used!");
+                                this.$refs.email.value=null;
+                                this.legalEmail=false;
+                            }else if(res.data.message==="success"){
+                                this.legalEmail=true;
+                            }else {
+                                alert("System Error!");
+                                this.legalEmail=false;
+                            }
+                        },function(){
+
+                        });
+                    }
+                },
+                passwordVerify(){
+                    let pass = this.$refs.password.value
+                    let passRe = this.$refs.passwordRe.value;
+                    if (null==pass||''===pass||null==passRe||''===passRe){
+                        alert("Illegal password!");
+                        this.legalPassword=false;
+                        return;
+                    }else{
+                        if (pass!==passRe){
+                            alert("Inconsistent passwords!")
+                            this.$refs.passwordRe.value = null;
+                            this.legalPassword=false;
+                            return;
+                        }
+                    }
+                    this.legalPassword=true;
+                },
+
+                signUpHandler(){
+                    let username = this.$refs.username.value;
+                    let password = this.$refs.password.value;
+                    let email = this.$refs.email.value;
+
+                    if (this.legalUsername&&this.legalPassword&&this.legalEmail){
+                        let data = {username:username,password:password,email:email};
+                        this.$http.post('/signUpVerify',data,{
+                            emulateJSON: true
+                        }).then(function(res){
+                            if(res.data.message==="success"){
+                                window.location.href = '/signUp';
+                            }else {
+                                alert("System Error!");
+                            }
+                        },function(){
+
+                        });
+                    } else  {
+                        alert("Illegal information!");
+                    }
                 }
             }
         }
