@@ -14,50 +14,52 @@
         <div class="col-sm-6">
             <div class="ibox">
                 <div class="ibox-title">
-                    <a href="#" onclick="openTarget('/getMoodDiary')"><h5>Did you log your mood today?</h5></a>
+                    <a href="#" onclick="openTarget('/getMoodDiary')"><h3>Did you log your mood today?</h3></a>
                 </div>
                 <div class="ibox-content">
-                    <img width="100%" height="auto" src="../static/imgs/pics/pic_mood_main.jpeg" th:src="@{imgs/pics/pic_mood_main.jpeg}"/>
+                    <img width="100%" height="400px" style="object-fit: cover;" src="../static/imgs/pics/pic_mood_main.jpeg" th:src="@{imgs/pics/pic_mood_main.jpeg}"/>
                 </div>
             </div>
         </div>
         <div class="col-sm-6">
             <div class="ibox">
-                <div class="ibox-title">
-                    <a href="#" onclick="openTarget('/getReflection')"><h5>Quick quiz</h5></a>
+                <div class="ibox-title title-green">
+                    <a href="#" onclick="openTarget('/getReflection')"><h3>Quick quiz</h3></a>
                 </div>
                 <div class="ibox-content">
-                    <img width="100%" height="auto" src="../static/imgs/pics/pic_quiz_main.jpg" th:src="@{imgs/pics/pic_quiz_main.jpg}"/>
+                    <img width="100%" height="400px" style="object-fit: cover;" src="../static/imgs/pics/pic_quiz_main.jpg" th:src="@{imgs/pics/pic_quiz_main.jpg}"/>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="ibox">
+                <div class="ibox-title title-blue">
+                    <a href="#" onclick="openTarget('/getRecommendation')"><h3>Today's recommendation</h3></a>
+                </div>
+                <div class="ibox-content">
+                    <img width="100%" height="300px" style="object-fit: cover;" src="../static/imgs/pics/pic_recommendation_main.jpg" th:src="@{imgs/pics/pic_recommendation_main.jpg}"/>
                 </div>
             </div>
         </div>
         <div class="col-sm-4">
             <div class="ibox">
-                <div class="ibox-title">
-                    <a href="#" onclick="openTarget('/getRecommendation')"><h5>Today's recommendation</h5></a>
+                <div class="ibox-title title-blue">
+                    <a href="#" onclick="openTarget('/getWeeklyMood')"><h3>View your weekly mood</h3></a>
                 </div>
                 <div class="ibox-content">
-                    <img width="100%" height="auto" src="../static/imgs/pics/pic_recommendation_main.jpg" th:src="@{imgs/pics/pic_recommendation_main.jpg}"/>
+                    <img width="100%" height="300px" style="object-fit: cover;" src="../static/imgs/pics/pic_mood_weekly_main.jpg" th:src="@{imgs/pics/pic_mood_weekly_main.jpg}"/>
                 </div>
             </div>
         </div>
         <div class="col-sm-4">
             <div class="ibox">
-                <div class="ibox-title">
-                    <a href="#" onclick="openTarget('/getWeeklyMood')"><h5>View your weekly mood</h5></a>
+                <div class="ibox-title title-blue">
+                    <a href="#" onclick="openTarget('/getLifestyleHelper')"><h3>Hours your exercise</h3></a>
                 </div>
                 <div class="ibox-content">
-                    <img width="100%" height="auto" src="../static/imgs/pics/pic_mood_weekly_main.jpg" th:src="@{imgs/pics/pic_mood_weekly_main.jpg}"/>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-4">
-            <div class="ibox">
-                <div class="ibox-title">
-                    <h5>Hours your exercise</h5>
-                </div>
-                <div class="ibox-content">
-                    <img width="100%" height="auto" src="../static/imgs/pics/pic_exercise_main.jpg" th:src="@{imgs/pics/pic_exercise_main.jpg}"/>
+                    <img width="100%" height="300px" style="object-fit: cover;" src="../static/imgs/pics/pic_exercise_main.jpg" th:src="@{imgs/pics/pic_exercise_main.jpg}"/>
                 </div>
             </div>
         </div>

@@ -14,17 +14,42 @@
         <div class="col-sm-12">
             <div class="ibox">
                 <div class="ibox-title">
-                    <h5>My Information</h5>
+                    <h3>My Information</h3>
                 </div>
-                <div class="ibox-content">
-                    <h3>USERNAME :{{username}}</h3>
-                    <h3>REALNAME :{{realname}}</h3>
-                    <h3>GENDER   :{{gender}}</h3>
-                    <h3>BIRTHDATE:{{birthDate}}</h3>
-                    <h3>EMAIL    :{{email}}</h3>
-                    <h3>PHONE    :{{phone}}</h3>
-                    <h3>INFO     :{{info}}</h3>
-                    <button class="signIn_btn" v-on:click="signOut">Sign Out</button>
+                <div class="ibox-content" style=" margin:15px;border: 1px solid #DCDCDC;border-radius: 10px;background-color: #F5F5F5;">
+                    <div class="row" style="margin:15px;border-bottom: 1px solid #c0c0c0;">
+                        <div align="center" style="margin-bottom: 15px;border-bottom: 1px solid #c0c0c0;">
+                            <img style="margin-bottom: 20px" src="../static/imgs/ic_user_main.png" th:src="@{imgs/ic_user_main.png}"/>
+                        </div>
+                        <div class="col-sm-6"><h3>USERNAME:</h3></div>
+                        <div class="col-sm-6"><h3 style="padding-left: 10px;color: #5E5E5E">{{username}}</h3></div>
+                    </div>
+                    <div class="row" style="margin:15px;border-bottom: 1px solid #c0c0c0;">
+                        <div class="col-sm-6"><h3>REALNAME:</h3></div>
+                        <div class="col-sm-6"><h3><input class="info-input" v-model="realname"></h3></div>
+                    </div>
+                    <div class="row" style="margin:15px;border-bottom: 1px solid #c0c0c0;">
+                        <div class="col-sm-6"><h3>GENDER:</h3></div>
+                        <div class="col-sm-6"><h3><input class="info-input" v-model="gender"></h3></div>
+                    </div>
+                    <div class="row" style="margin:15px;border-bottom: 1px solid #c0c0c0;">
+                        <div class="col-sm-6"><h3>BIRTHDATE:</h3></div>
+                        <div class="col-sm-6"><h3><input class="info-input" v-model="birthDate"></h3></div>
+                    </div>
+                    <div class="row" style="margin:15px;border-bottom: 1px solid #c0c0c0;">
+                        <div class="col-sm-6"><h3>EMAIL:</h3></div>
+                        <div class="col-sm-6"><h3><input class="info-input" v-model="email"></h3></div>
+                    </div>
+                    <div class="row" style="margin:15px;border-bottom: 1px solid #c0c0c0;">
+                        <div class="col-sm-6"><h3>PHONE:</h3></div>
+                        <div class="col-sm-6"><h3><input class="info-input" v-model="phone"></h3></div>
+                    </div>
+                    <div class="row" style="margin:15px;border-bottom: 1px solid #c0c0c0;">
+                        <div class="col-sm-6"><h3>PERSONAL PROFILE:</h3></div>
+                        <div class="col-sm-6"><h3><input class="info-input" v-model="info"></h3></div>
+                    </div>
+                    <button class="submit-button" v-on:click="saveUserInfo">Submit</button>
+                    <button class="submit-button" v-on:click="signOut">Sign Out</button>
                 </div>
             </div>
         </div>
@@ -50,7 +75,6 @@
         },
         methods:{
             getUserInfo(){
-                //发送get请求
                 this.$http.post('/getUserInfoDtl').then(function(res){
                     this.username = res.data.data.username;
                     this.realname = res.data.data.realName;
@@ -60,7 +84,24 @@
                     this.phone = res.data.data.phoneNumber;
                     this.info = res.data.data.personInfo;
                 },function(){
-                    console.log('Failed');
+                    alert('Failed');
+                });
+            },
+            saveUserInfo(){
+                let data = {username:this.username,
+                            realName:this.realname,
+                            gender:this.gender,
+                            birthDate:this.birthDate,
+                            emailAddress:this.email,
+                            phoneNumber:this.phone,
+                            personInfo:this.info};
+                console.log(data);
+                this.$http.post('/saveUserInfo',data,{
+                    emulateJSON: true
+                }).then(function(res){
+                    alert("Success");
+                },function(){
+                    alert('System Error!');
                 });
             },
             signOut(){

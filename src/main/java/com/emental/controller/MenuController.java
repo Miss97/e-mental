@@ -72,6 +72,21 @@ public class MenuController {
         return "self_rat_dep_scale";
     }
 
+    @RequestMapping("/getInspirationQuiz")
+    public String getInspirationQuiz(){
+        return "inspiration_quiz";
+    }
+
+    @RequestMapping("/getMoodByDate")
+    @ResponseBody
+    public JsonResult getMoodByDate(String createDate) {
+        List<String> moods = emMoodDiaryMapper.getMoodByDate(createDate);
+        JsonResult jr = new JsonResult();
+        jr.setData(moods);
+        jr.setMessage("success");
+        return jr;
+    }
+
     @RequestMapping("/getLast7Mood")
     @ResponseBody
     public JsonResult getLast7Mood() throws ParseException {
@@ -86,6 +101,23 @@ public class MenuController {
         }
         JsonResult jr = new JsonResult();
         jr.setData(last7MoodMap);
+        jr.setMessage("success");
+        return jr;
+    }
+
+    @RequestMapping("/saveUserInfo")
+    @ResponseBody
+    public JsonResult saveUserInfo(String username,String realName,String gender,String birthDate,String emailAddress,String phoneNumber,String personInfo){
+        EmUserInfo userInfo = new EmUserInfo();
+        userInfo.setUsername(username);
+        userInfo.setRealName(realName);
+        userInfo.setGender(gender);
+        userInfo.setBirthDate(birthDate);
+        userInfo.setEmailAddress(emailAddress);
+        userInfo.setPhoneNumber(phoneNumber);
+        userInfo.setPersonInfo(personInfo);
+        emUserInfoMapper.saveUserInfo(userInfo);
+        JsonResult jr = new JsonResult();
         jr.setMessage("success");
         return jr;
     }

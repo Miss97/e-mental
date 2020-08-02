@@ -11,33 +11,75 @@
 
 <div id="lifestyleHelper" class="wrapper wrapper-content">
     <div class="row">
-        <div class="col-sm-12">
+        <div class="col-sm-6">
             <div class="ibox">
                 <div class="ibox-title">
-                    <h5>Record your daily weight</h5>
+                    <h3>Record your daily weight</h3>
                 </div>
-                <div class="ibox-content">
-                    <span>Today's Weight: </span><input>
-                </div>
-
-                <div class="ibox-title" style="margin-top: 10px;">
-                    <h5>Record your weekly exercise</h5>
-                </div>
-                <div class="ibox-content">
-                </div>
-
-                <div class="ibox-title" style="margin-top: 10px;">
-                    <h5>Record your sleeping hours</h5>
-                </div>
-                <div class="ibox-content">
-                    <span>Hours slept last night: {{sleptHours}} hours</span><input id="range" type="range" value="5" min="0" max="24" v-model="sleptHours">
-                </div>
-
-                <div class="ibox-content">
-                    <button class="submit-button" v-on:click="submit">Submit</button>
+                <div class="ibox-content" style="height: 200px">
+                    <h1 style="color: #8FBAEF"><span>{{tips1}}</span></h1>
+                    <h1><span>Today's Weight: </span><input class="info-input" v-model="weight_record" style="width: 100px"><span>KG</span></h1>
                 </div>
             </div>
         </div>
+
+        <div class="col-sm-6">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h3>Record your weekly exercise</h3>
+                </div>
+                <div class="ibox-content" style="height: 200px">
+                    <h1 style="color: #8FBAEF"><span>{{tips2}}</span></h1>
+                    <span v-for="(item,index) in exercise_record">
+                        <span v-if="item === 'N'">
+                            <span v-if="index === clock_day" >
+                                <a href="#" @click.prevent="insertExercise"><img class="exec-icon exec-icon-clock" src="../static/imgs/ic_daily_exercise_n.png" th:src="@{imgs/ic_daily_exercise_n.png}"/></a>
+                            </span>
+                            <span v-else>
+                                <img class="exec-icon" src="../static/imgs/ic_daily_exercise_n.png" th:src="@{imgs/ic_daily_exercise_n.png}"/>
+                            </span>
+                        </span>
+                        <span v-else-if="item === 'Y'">
+                            <img class="exec-icon" style="opacity:1" src="../static/imgs/ic_daily_exercise_y.png" th:src="@{imgs/ic_daily_exercise_y.png}"/>
+                        </span>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h3>Record your sleeping hours</h3>
+                </div>
+                <div class="ibox-content">
+                    <h1><span>Hours slept last night: {{sleep_record}} hours</span></h1><input id="range" type="range" value="5" min="0" max="24" v-model="sleep_record">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12">
+            <div class="ibox">
+                <div class="ibox-title title-blue">
+                    <h3>Weekly weight line chat (Kg)</h3>
+                </div>
+                <div class="ibox-content">
+                    <canvas id="wlc" width="1500" height="500"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12">
+            <div class="ibox">
+                <div class="ibox-title title-blue">
+                    <h3>Weekly sleep line chat (Hour)</h3>
+                </div>
+                <div class="ibox-content">
+                    <canvas id="slc" width="1500" height="1000"></canvas>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 <script th:src="@{scripts/vue.min.js}"></script>
@@ -46,14 +88,119 @@
     const app = new Vue({
         el:'#lifestyleHelper',
         data:{
-            sleptHours:8,
+            week_name:['SUN','MON','TUE','WED','THU','FRI','SAT'],
+            weight_record:0,
+            exercise_record:['N','N','N','N','Y','N','N'],
+            sleep_record:8,
+            clock_day:'-1',
+            tips1:'You should be proud!',
+            tips2:'Keeping on keeping up!',
+            sleepData:null,
+            weightData:null,
         },
         mounted:function(){
-
+            this.initRecord();
         },
         methods:{
-            submit(){
+            initRecord(){
+                let date = new Date();
+                this.clock_day = date.getDay();
+                this.weightData = ['22','22','23','23','23','23','50'];
+                this.initWeeklyWeightRecord(this.weightData);
+                this.sleepData = ['12','7','9','3','13','1','7'];
+                this.initWeeklySleepRecord(this.sleepData);
+            },
+            recordExercise(){
+                this.exercise_record[this.clock_day] = 'Y';
+            },
+            recordSleep(){
 
+            },
+            recordWeight(){
+
+            },
+
+            initWeeklyWeightRecord(weightData){
+                let canvas=document.getElementById('wlc');
+                let ctx=canvas.getContext('2d');
+
+
+                //border
+                ctx.lineWidth=0.5;
+                ctx.moveTo(30,20);
+                ctx.lineTo(30,410);
+                ctx.lineTo(1300,410);
+                ctx.font = "20px bold";
+                for(let i=0;i<3;i++)
+                {
+                    ctx.fillText((150-i*50)+'', 0, 50+120*i);
+                    ctx.moveTo(30,50+120*i);
+                    ctx.lineTo(1300,50+120*i);
+                }
+
+                ctx.strokeStyle="#999";
+                ctx.font = "20px bold";
+
+                let i=0;
+                ctx.moveTo(30,410);
+                for(let weight in weightData){
+                    let x = 30+i*(1270/6);
+                    let y = 410-(120/50)*weightData[weight];
+                    ctx.lineTo(x,y);
+                    ctx.fillText(weightData[weight], x, y);
+                    i++;
+                }
+
+                i=0;
+                for (let k in this.week_name){
+                    let x = 30+i*(1270/6);
+                    ctx.fillText(this.week_name[k], x, 450);
+                    i++;
+                }
+
+                ctx.stroke();
+            },
+
+            initWeeklySleepRecord(sleepData){
+                let canvas=document.getElementById('slc');
+                let ctx=canvas.getContext('2d');
+
+
+                //border
+                ctx.lineWidth=0.5;
+                ctx.moveTo(30,20);
+                ctx.lineTo(30,770);
+                ctx.lineTo(1300,770);
+                ctx.font = "20px bold";
+                for(let i=0;i<24;i++)
+                {
+                    ctx.fillText((24-i)+'', 0, 50+30*i);
+                    ctx.moveTo(30,50+30*i);
+                    ctx.lineTo(1300,50+30*i);
+                }
+
+                ctx.strokeStyle="#999";
+                ctx.font = "20px bold";
+
+                let i=0;
+                ctx.moveTo(30,410);
+
+                for(let sleep in sleepData){
+                    let x = 30+i*(1270/6);
+                    let y = 770-30*sleepData[sleep];
+                    ctx.lineTo(x,y);
+                    ctx.fillText(sleepData[sleep], x, y);
+                    i++;
+                }
+
+                i=0;
+                for (let k in this.week_name){
+                    let x = 30+i*(1270/6);
+                    ctx.fillText(this.week_name[k], x, 810);
+                    i++;
+                }
+
+                ctx.stroke();
             }
         }
     })

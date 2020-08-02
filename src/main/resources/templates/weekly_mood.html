@@ -14,7 +14,7 @@
         <div class="col-sm-12">
             <div class="ibox">
                 <div class="ibox-title">
-                    <h5>Mood line chart last 7 days</h5>
+                    <h3>Mood line chart last 7 days</h3>
                 </div>
                 <div class="ibox-content">
                     <canvas id="mc" width="1500" height="500"></canvas>
@@ -49,9 +49,8 @@
                 let canvas=document.getElementById('mc');
                 let ctx=canvas.getContext('2d');
 
-
                 //border
-                ctx.lineWidth=1;
+                ctx.lineWidth=0.5;
                 ctx.moveTo(30,20);
                 ctx.lineTo(30,410);
                 ctx.lineTo(900,410);

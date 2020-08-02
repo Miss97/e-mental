@@ -10,26 +10,38 @@
 }
 .body-list ul li{
     width:13%;
-    height:40px;
+    height:80px;
     line-height:40px;
     list-style-type:none;
     display:block;
     box-sizing:border-box;
     float:left;
+    font-size: 25px;
     text-align:center;
+    transition: 0.3s;
+}
+
+.date-data:hover{
+    color:#90C0C4;
+    transition: 0.3s;
 }
 
 .lightgrey{
     color:#a8a8a8;
 }
+
 .darkgrey{
     color:#565656;
 }
 
-a{
-    text-decoration: none;
-    font-weight: bold;
+.lightgreen{
+    color:#6ac13c;
 }
+
+a:link {text-decoration:none}
+a:visited {text-decoration:none}
+a:hover {text-decoration:none}
+a:active {text-decoration:none}
 
 .month {
     color:#6ac13c;
@@ -39,4 +51,22 @@ a{
 .year {
     color:#6ac13c;
     font-size: 50px;
+}
+
+.sub-window{
+    width: 280px;
+    height: 150px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    box-shadow: 10px 10px 5px #CECFD1;
+    background: #FFFFFF;
+    visibility:hidden;
+    transition:0.3s;
+}
+.sub-window:hover{
+}
+
+.sub-window-hide{
+    display: none;
 }

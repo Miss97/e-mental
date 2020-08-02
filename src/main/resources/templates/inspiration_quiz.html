@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <title>Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-3.3.4.css">
+    <link rel="stylesheet" type="text/css" href="css/dashboard_style.css">
+</head>
+<body>
+
+<div id="iq" class="wrapper wrapper-content">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox">
+                <div class="ibox-title title-blue">
+                    <h3>Inspiration Quiz</h3>
+
+                </div>
+                <div class="ibox-content" style="height: 300px">
+                    <div align="center">
+                        <span style="display:inline-block">
+                            <h1>Q: {{questions[point].question}}</h1>
+                        </span>
+                    </div>
+
+                    <h3 style="margin: 50px">
+                        {{hint}}
+                    </h3>
+                </div>
+                <div class="ibox-content" style="height: 200px">
+                    <div align="center">
+                        <h1 style="margin-top:50px">
+                            <a href="#" @click.prevent="nextQuestion" style="background-color:#a94442;color:#FFFFFF;border-radius:5px;margin:20px;"><span style="width:200px; display:inline-block;">{{yesButton}}</span></a>
+                            <a href="#" @click.prevent="nextQuestion" style="background-color:#3c763d;color:#FFFFFF;border-radius:5px;margin:20px;"><span style="width:200px; display:inline-block;">{{noButton}}</span></a>
+                        </h1>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <h4>The following questions (which will appear randomly) have only two options. These questions are designed to identify potential signs of depression, there are no right or wrong answers and we encourage you to answer honestly. If the choice is always "yes," more attention to your mental health or early action is suggested.</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:src="@{scripts/vue.min.js}"></script>
+<script>
+    let app = new Vue({
+        el:'#iq',
+        data:{
+            result:0,
+            point:0,
+            hint:null,
+            question:null,
+            next_flag:false,
+            yesButton:'YES',
+            noButton:'NO',
+            questions:[
+                {question:'Do you often decline social invitations?',
+                    hint:null},
+
+                {question:'Do you often feel irritated or angry?',
+                    hint:'Breathing deeply helps you learn how to calm down by lowering your internal anger meter. When you get really angry, walk away from the source. A 5-minute walk outside or another calming activity like yoga are both great coping strategies for dealing with anger.'},
+
+                {question:'Are you acting recklessly in driving, sex, gambling, drinking, or other similar activities?',
+                    hint:null},
+
+                {question:'Do you spend too much time alone?',
+                    hint:null},
+
+                {question:'Are you in contact with negative people?',
+                    hint:'It can be difficult to be upbeat and positive around someone who constantly complains. Find out the signs and stay away from toxic, negative friendships.'},
+
+                {question:'You don\'t get enough green time.',
+                    hint:'Walking outdoors in fresh air and sunlight can be very helpful for your mood. Also, keeping a few potted plants in your living space to lighten the mood indoors, too.'},
+            ]
+        },
+        methods:{
+            nextQuestion(){
+                if (this.yesButton==='RESTART'){
+                    this.yesButton = 'YES';
+                    this.noButton = 'NO';
+                    this.point = 0;
+                }
+                if (this.point==this.questions.length-1&&this.next_flag){
+                    this.yesButton = 'RESTART';
+                    this.noButton = 'RESTART';
+                    this.next_flag = false;
+                    return;
+                }
+                if (this.point<this.questions.length){
+                    this.hint = null;
+                    let temp = this.questions[this.point].hint;
+                    if (temp==null){
+                        if (this.point<this.questions.length-1){
+                            this.point++;
+                        }
+                        this.yesButton = 'YES';
+                        this.noButton = 'NO';
+                    } else {
+                        if (this.next_flag){
+                            this.next_flag = false;
+                            if (this.point<this.questions.length-1){
+                                this.point++;
+                            }
+                            this.yesButton = 'YES';
+                            this.noButton = 'NO';
+                        }else{
+                            this.hint='Hint:'+temp;
+                            this.next_flag = true;
+                            this.yesButton = 'NEXT';
+                            this.noButton = 'NEXT';
+                        }
+                    }
+                }
+            }
+        }
+    });
+</script>
+</body>
+</html>

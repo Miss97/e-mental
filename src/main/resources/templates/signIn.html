@@ -11,8 +11,8 @@
 <body>
     <div>
         <div class="outer_label">
-            <h1>E-MENTAL</h1>
-            <h2>sub title</h2>
+            <h1>ADU</h1>
+            <h2>Every day is a new self and a new start!</h2>
         </div>
 
         <div id="singInForm" class="signIn_form">
@@ -42,7 +42,7 @@
                     let username = this.$refs.username.value;
                     let password = this.$refs.password.value;
                     if (username == null||'' === username||password == null||'' === password){
-                        alert("Illegal username or password!");
+                        alert("Illegeal username or password!");
                     }
                     let data = {username:username,password:password};
                     this.$http.post('/signInVerify',data,{
@@ -65,9 +65,9 @@
 
     Vue.component('signUp',{
             data: {
-                legalUsername:false,
-                legalPassword:false,
-                legalEmail:false
+                legealUsername:false,
+                legealPassword:false,
+                legealEmail:false
             },
             template:'<div id="singUp">' +
                         '<input type="text" @blur="usernameVerify" ref="username" class="qxs-ic_user qxs-icon"  placeholder="USERNAME">' +
@@ -87,12 +87,12 @@
                             if (res.data.message==="failed"){
                                 alert("Username already in used!");
                                 this.$refs.username.value=null;
-                                this.legalUsername=false;
+                                this.legealUsername=false;
                             }else if(res.data.message==="success"){
-                                this.legalUsername=true;
+                                this.legealUsername=true;
                             }else {
                                 alert("System Error!");
-                                this.legalUsername=false;
+                                this.legealUsername=false;
                             }
                         },function(){
 
@@ -109,12 +109,12 @@
                             if (res.data.message==="failed"){
                                 alert("Email already in used!");
                                 this.$refs.email.value=null;
-                                this.legalEmail=false;
+                                this.legealEmail=false;
                             }else if(res.data.message==="success"){
-                                this.legalEmail=true;
+                                this.legealEmail=true;
                             }else {
                                 alert("System Error!");
-                                this.legalEmail=false;
+                                this.legealEmail=false;
                             }
                         },function(){
 
@@ -124,19 +124,17 @@
                 passwordVerify(){
                     let pass = this.$refs.password.value
                     let passRe = this.$refs.passwordRe.value;
-                    if (null==pass||''===pass||null==passRe||''===passRe){
-                        alert("Illegal password!");
-                        this.legalPassword=false;
+                    if (pass!==passRe){
+                        alert("Inconsistent passwords!")
+                        this.$refs.passwordRe.value = null;
+                        this.legealPassword=false;
                         return;
-                    }else{
-                        if (pass!==passRe){
-                            alert("Inconsistent passwords!")
-                            this.$refs.passwordRe.value = null;
-                            this.legalPassword=false;
-                            return;
-                        }
                     }
-                    this.legalPassword=true;
+                    if (null==pass||''===pass){
+                        this.legealPassword=false;
+                        return;
+                    }
+                    this.legealPassword=true;
                 },
 
                 signUpHandler(){
@@ -144,7 +142,7 @@
                     let password = this.$refs.password.value;
                     let email = this.$refs.email.value;
 
-                    if (this.legalUsername&&this.legalPassword&&this.legalEmail){
+                    if (this.legealUsername&&this.legealPassword&&this.legealEmail){
                         let data = {username:username,password:password,email:email};
                         this.$http.post('/signUpVerify',data,{
                             emulateJSON: true
@@ -158,7 +156,7 @@
 
                         });
                     } else  {
-                        alert("Illegal information!");
+                        alert("Illegeal information!");
                     }
                 }
             }
@@ -176,7 +174,8 @@
     const app = new Vue({
         el: '#singInForm',
         data: {
-            title:'E-MENTAL',
+            title:'ADU',
+            sub_title:'Every day is a new self and a new start!',
             target: 'signIn'
         }
     });

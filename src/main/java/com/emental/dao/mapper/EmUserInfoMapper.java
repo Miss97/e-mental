@@ -32,6 +32,9 @@ public interface EmUserInfoMapper {
         @Update("UPDATE EM_USER_INFO SET STATUS='1' WHERE DATA_ID =#{dataId}")
         void acctiveAccount(String dataId);
 
+        @Update("UPDATE EM_USER_INFO SET REAL_NAME=#{realName},BIRTH_DATE=#{birthDate},GENDER=#{gender},EMAIL_ADDRESS=#{emailAddress},PHONE_NUMBER=#{phoneNumber},PERSON_INFO=#{personInfo} WHERE USERNAME =#{username}")
+        void saveUserInfo(EmUserInfo user);
+
         @Update("UPDATE EM_USER_INFO SET USERNAME=#{username},PASSWORD=#{password},REAL_NAME=#{realName},BIRTH_DATE=#{birthDate},GENDER=#{gender},EMAIL_ADDRESS=#{emailAddress},PHONE_NUMBER=#{phoneNumber},PERSON_INFO=#{personInfo},CREATE_DATE=#{createDate},STATUS=#{status} WHERE DATA_ID =#{dataId}")
         void update(EmUserInfo user);
 

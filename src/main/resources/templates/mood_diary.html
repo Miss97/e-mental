@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:v-on="http://www.w3.org/1999/xhtml"
-      xmlns:v-bind="http://www.w3.org/1999/xhtml">
+      xmlns:v-on="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
     <title>Dashboard</title>
@@ -16,20 +15,23 @@
         <div class="col-sm-12">
             <div class="ibox">
                 <div class="ibox-title">
-                    <h5>Mood Diary</h5>
-                    <h5 style="float:right">Notify me
-                        <input style="margin-top:2px; margin-left: 5px;float:right" v-model="notifyFlg" type="checkbox">
+                    <h3>Mood Diary</h3>
+                    <h5 style="float:right;margin-top:-20px; ">Notify me
+                        <input style="margin-left: 5px;float:right" v-model="notifyFlg" type="checkbox">
                     </h5>
                 </div>
                 <div class="ibox-content">
                     <textarea maxlength="4000" class="text-box" v-model="content"></textarea>
-                    <a href="#" @click.prevent="setMoodStatus('0')"><img class="mood-icon" :style="{'opacity':(status=='0'?'1':'0.4')}" src="../static/imgs/ic_mood_bad.png" th:src="@{imgs/ic_mood_bad.png}"/></a>
-                    <a href="#" @click.prevent="setMoodStatus('1')"><img class="mood-icon" :style="{'opacity':(status=='1'?'1':'0.4')}" src="../static/imgs/ic_mood_normal.png" th:src="@{imgs/ic_mood_normal.png}"/></a>
-                    <a href="#" @click.prevent="setMoodStatus('2')"><img class="mood-icon" :style="{'opacity':(status=='2'?'1':'0.4')}" src="../static/imgs/ic_mood_happy.png" th:src="@{imgs/ic_mood_happy.png}"/></a>
-                    <a href="#" @click.prevent="setMoodStatus('3')"><img class="mood-icon" :style="{'opacity':(status=='3'?'1':'0.4')}" src="../static/imgs/ic_mood_ecstasy.png" th:src="@{imgs/ic_mood_ecstasy.png}"/></a>
+                    <span>
+                        <a href="#" @click.prevent="setMoodStatus('0')"><img class="mood-icon" :style="{'opacity':(status=='0'?'1':'0.3')}" src="../static/imgs/ic_mood_bad.png" th:src="@{imgs/ic_mood_bad.png}"/></a>
+                        <a href="#" @click.prevent="setMoodStatus('1')"><img class="mood-icon" :style="{'opacity':(status=='1'?'1':'0.3')}" src="../static/imgs/ic_mood_normal.png" th:src="@{imgs/ic_mood_normal.png}"/></a>
+                        <a href="#" @click.prevent="setMoodStatus('2')"><img class="mood-icon" :style="{'opacity':(status=='2'?'1':'0.3')}" src="../static/imgs/ic_mood_happy.png" th:src="@{imgs/ic_mood_happy.png}"/></a>
+                        <a href="#" @click.prevent="setMoodStatus('3')"><img class="mood-icon" :style="{'opacity':(status=='3'?'1':'0.3')}" src="../static/imgs/ic_mood_ecstasy.png" th:src="@{imgs/ic_mood_ecstasy.png}"/></a>
+                    </span>
                     <button class="submit-button" v-on:click="submit">Submit</button>
+                    <button class="submit-button" v-on:click="submit">Clear diaries older than 7 days</button>
                 </div>
-                <div v-for="item in diaryData" :key="item.name">
+                <div class="diaryContent" v-for="item in diaryData" :key="item.name">
                     <div class="ibox-content">
                         <h2>{{item.createTime}} : {{item.content}}
                             <span v-if="item.moodStatus === '0'">

@@ -20,6 +20,9 @@ public interface EmMoodDiaryMapper {
     @Select("SELECT DATA_ID,USERNAME,CONTENT,MOOD_STATUS,CREATE_DATE,CREATE_TIME FROM EM_MOOD_DIARY WHERE USERNAME = #{username} ORDER BY CREATE_TIME DESC")
     List<EmMoodDiary> getListByUsername(String username);
 
+    @Select("SELECT MOOD_STATUS FROM EM_MOOD_DIARY WHERE CREATE_DATE = #{create}")
+    List<String> getMoodByDate(String create);
+
     @Select("SELECT REPLACE(CAST(Round(SUM(MOOD_STATUS)/COUNT(1)) AS TEXT),'.0','') AS MOOD_STATUS,CREATE_DATE FROM EM_MOOD_DIARY WHERE USERNAME = #{username} GROUP BY CREATE_DATE ORDER BY CREATE_DATE DESC LIMIT 7")
     List<EmMoodDiary> getLast7Mood(String username);
 

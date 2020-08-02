@@ -10,11 +10,11 @@ body {
     z-index: 1;
     top: 0;
     left: 0;
-    background-color: #FFE4E1;
+    background-color: #FDFDFD;
     overflow-x: hidden;
     transition: 0.5s;
     padding-top: 60px;
-    border-right:1px solid #FFDAB9;
+    border-right:1px solid #DEDEDE;
 }
 
 .sidenav a {
@@ -40,7 +40,7 @@ body {
 }
 
 .sidenav .foldBtn:hover{
-    background: #FFE4E1;
+    background: #FDFDFD;
 }
 
 .sidenav .userInfo {
@@ -60,15 +60,15 @@ body {
 
 #main {
     height: 100%;
-    width: 95%;
+    width: 100%;
     position: fixed;
     z-index: 0;
     top: 0;
-    left: 50px;
-    transition: margin-left .5s;
+    left: 0;
+    transition: .5s;
     padding: 16px;
 
-    background: linear-gradient(125deg, #FFFFFF,#FFF0F5,#FFE4E1,#DB7093);
+    background: linear-gradient(125deg, #F8F8F8,#F8F8F8,#F8F8F8,#F8F8F8);
     animation: bgSize 10s infinite ease-in-out alternate;
 }
 
