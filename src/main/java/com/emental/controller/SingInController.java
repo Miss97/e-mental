@@ -1,6 +1,8 @@
 package com.emental.controller;
 
+import com.emental.dao.entity.EmDailyRecord;
 import com.emental.dao.entity.EmUserInfo;
+import com.emental.dao.mapper.EmDailyRecordMapper;
 import com.emental.dao.mapper.EmUserInfoMapper;
 import com.emental.util.BaseInfoGenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,8 @@ import javax.servlet.http.HttpSession;
 public class SingInController {
     @Autowired
     private EmUserInfoMapper emUserInfoMapper;
+    @Autowired
+    private EmDailyRecordMapper emDailyRecordMapper;
 
     @Autowired
     private JavaMailSender mailSender;
@@ -54,6 +58,16 @@ public class SingInController {
 
     @RequestMapping("/signIn")
     public String signIn(){
+        String username = BaseInfoGenUtil.getUsername();
+        String createDate = BaseInfoGenUtil.getNowDate();
+        int count = emDailyRecordMapper.verifyExists(username,createDate);
+        if (count<1&&username!=null){
+            EmDailyRecord dailyRecord = new EmDailyRecord();
+            dailyRecord.setDataId(BaseInfoGenUtil.getDataId(32));
+            dailyRecord.setUsername(username);
+            dailyRecord.setCreateDate(createDate);
+            emDailyRecordMapper.insertRecord(dailyRecord);
+        }
         return "/welcome";
     }
 

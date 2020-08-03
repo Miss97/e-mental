@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
+import java.util.Map;
 
 public interface EmDailyRecordMapper {
 
@@ -14,20 +15,23 @@ public interface EmDailyRecordMapper {
         @Select("SELECT * FROM EM_DAILY_RECORD")
         List<EmDailyRecord> getAll();
 
+        @Select("SELECT COUNT(1) FROM EM_DAILY_RECORD WHERE USERNAME = #{username} AND CREATE_DATE = #{createDate}")
+        int verifyExists(String username,String createDate);
+
         @Select("SELECT * FROM EM_DAILY_RECORD WHERE DATA_ID = #{dataId}")
         EmDailyRecord getOne(String dataId);
 
-        @Select("SELECT EXERCISE_RECORD FROM EM_DAILY_RECORD WHERE USERNAME = #{username} AND CREATE_DATE>=strftime('%Y%m%d','now','+0 day','weekday 0')")
-        List<String> getWeeklyExerciseRecord(String username);
+        @Select("SELECT EXERCISE_RECORD,CREATE_DATE FROM EM_DAILY_RECORD WHERE USERNAME = #{username} AND CREATE_DATE>=strftime('%Y%m%d','now','start of day','-7 day','weekday 0')")
+        List<Map<String,String>> getWeeklyExerciseRecord(String username);
 
-        @Select("SELECT WEIGHT_RECORD FROM EM_DAILY_RECORD WHERE USERNAME = #{username} AND CREATE_DATE>=strftime('%Y%m%d','now','+0 day','weekday 0')")
-        List<String> getWeeklyWeightRecord(String username);
+        @Select("SELECT WEIGHT_RECORD,CREATE_DATE FROM EM_DAILY_RECORD WHERE USERNAME = #{username} AND CREATE_DATE>=strftime('%Y%m%d','now','start of day','-7 day','weekday 0')")
+        List<Map<String,String>> getWeeklyWeightRecord(String username);
 
-        @Select("SELECT SLEEP_RECORD FROM EM_DAILY_RECORD WHERE USERNAME = #{username} AND CREATE_DATE>=strftime('%Y%m%d','now','+0 day','weekday 0')")
-        List<String> getWeeklySleepRecord(String username);
+        @Select("SELECT SLEEP_RECORD,CREATE_DATE FROM EM_DAILY_RECORD WHERE USERNAME = #{username} AND CREATE_DATE>=strftime('%Y%m%d','now','start of day','-7 day','weekday 0')")
+        List<Map<String,String>> getWeeklySleepRecord(String username);
 
         @Select("SELECT * FROM EM_DAILY_RECORD WHERE USERNAME = #{username} AND CREATE_DATE = #{createDate}")
-        List<EmDailyRecord> getTodayRecord(String username,String createDate);
+        EmDailyRecord getTodayRecord(String username,String createDate);
 
         @Insert("INSERT INTO EM_DAILY_RECORD(DATA_ID,USERNAME,WEIGHT_RECORD,EXERCISE_RECORD,SLEEP_RECORD,CREATE_DATE) VALUES(#{dataId},#{username},#{weightRecord},#{exerciseRecord},#{sleepRecord},#{createDate})")
         void insertRecord(EmDailyRecord record);

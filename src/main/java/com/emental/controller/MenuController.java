@@ -1,7 +1,9 @@
 package com.emental.controller;
 
+import com.emental.dao.entity.EmDailyRecord;
 import com.emental.dao.entity.EmMoodDiary;
 import com.emental.dao.entity.EmUserInfo;
+import com.emental.dao.mapper.EmDailyRecordMapper;
 import com.emental.dao.mapper.EmMoodDiaryMapper;
 import com.emental.dao.mapper.EmUserInfoMapper;
 import com.emental.util.BaseInfoGenUtil;
@@ -21,6 +23,8 @@ public class MenuController {
     private EmUserInfoMapper emUserInfoMapper;
     @Autowired
     private EmMoodDiaryMapper emMoodDiaryMapper;
+    @Autowired
+    private EmDailyRecordMapper emDailyRecordMapper;
 
     @RequestMapping("/welcome")
     public String welcome(){
@@ -172,4 +176,80 @@ public class MenuController {
         jr.setMessage("success");
         return jr;
     }
+
+    @RequestMapping("/getRecord")
+    @ResponseBody JsonResult getRecord(){
+        String username = BaseInfoGenUtil.getUsername();
+        String nowDate = BaseInfoGenUtil.getNowDate();
+        EmDailyRecord dailyRecord = emDailyRecordMapper.getTodayRecord(username,nowDate);
+
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("weight",dailyRecord.getWeightRecord());
+        map.put("sleepHours",dailyRecord.getSleepRecord());
+        map.put("weeklyExercise",formatWeeklyRecord(emDailyRecordMapper.getWeeklyExerciseRecord(username),"EXERCISE_RECORD","N"));
+        map.put("weeklyWeight",formatWeeklyRecord(emDailyRecordMapper.getWeeklyWeightRecord(username),"WEIGHT_RECORD",null));
+        map.put("weeklySleep",formatWeeklyRecord(emDailyRecordMapper.getWeeklySleepRecord(username),"SLEEP_RECORD",null));
+        JsonResult jr = new JsonResult();
+        jr.setData(map);
+        jr.setMessage("success");
+        return jr;
+    }
+
+    @RequestMapping("/recordWeight")
+    @ResponseBody JsonResult recordWeight(String weight){
+        String username = BaseInfoGenUtil.getUsername();
+        String nowDate = BaseInfoGenUtil.getNowDate();
+        emDailyRecordMapper.updateWeight(weight,username,nowDate);
+
+        JsonResult jr = new JsonResult();
+        jr.setData(null);
+        jr.setMessage("success");
+        return jr;
+    }
+
+    @RequestMapping("/recordSleep")
+    @ResponseBody JsonResult recordSleep(String sleepHours){
+        String username = BaseInfoGenUtil.getUsername();
+        String nowDate = BaseInfoGenUtil.getNowDate();
+        emDailyRecordMapper.updateSleep(sleepHours,username,nowDate);
+
+        JsonResult jr = new JsonResult();
+        jr.setData(null);
+        jr.setMessage("success");
+        return jr;
+    }
+
+    private List<String> formatWeeklyRecord(List<Map<String,String>> mapList,String keyValue,String nullValue){
+        List<String> list = new ArrayList<>(7);
+        Map<String,String> map = new LinkedHashMap<>();
+        for (Map<String,String> m : mapList){
+            map.put(m.get("CREATE_DATE"),m.get(keyValue));
+        }
+        Set<String> weekDays = getWeekDays();
+        for (String weekDay:weekDays){
+            if (map.get(weekDay)==null)
+                list.add(nullValue);
+            else
+                list.add(map.get(weekDay));
+        }
+        return list;
+    }
+
+    private Set<String> getWeekDays() {
+        Set<String> weekDays = new LinkedHashSet<>();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        Calendar c = Calendar.getInstance();
+        int dayOfWeek = c.get(Calendar.DAY_OF_WEEK );
+        if (c.getFirstDayOfWeek() == Calendar.SUNDAY) {
+            c.add(Calendar.DAY_OF_MONTH, 0);
+        }
+        c.add(Calendar.DAY_OF_MONTH, -dayOfWeek);
+        for (int i=0;i<7;i++) {
+            c.add(Calendar.DAY_OF_MONTH, 1);
+            weekDays.add(sdf.format(c.getTime()));
+        }
+        return weekDays;
+    }
+
 }
