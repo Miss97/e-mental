@@ -11,19 +11,19 @@
 
 <div id="lifestyleHelper" class="wrapper wrapper-content">
     <div class="row">
-        <div class="col-sm-6">
+        <div class="col-sm-4">
             <div class="ibox">
                 <div class="ibox-title">
                     <h3>Record your daily weight</h3>
                 </div>
                 <div class="ibox-content" style="height: 200px">
                     <h1 style="color: #8FBAEF"><span>{{tips1}}</span></h1>
-                    <h1><span>Today's Weight: </span><input class="info-input" v-model="weight_record" style="width: 100px"><span>KG</span></h1>
+                    <h1><span>Today's Weight: </span><input @blur="recordWeight" class="info-input" v-model="weight_record" style="width: 100px"><span>KG</span></h1>
                 </div>
             </div>
         </div>
 
-        <div class="col-sm-6">
+        <div class="col-sm-8">
             <div class="ibox">
                 <div class="ibox-title">
                     <h3>Record your weekly exercise</h3>
@@ -53,7 +53,7 @@
                     <h3>Record your sleeping hours</h3>
                 </div>
                 <div class="ibox-content">
-                    <h1><span>Hours slept last night: {{sleep_record}} hours</span></h1><input id="range" type="range" value="5" min="0" max="24" v-model="sleep_record">
+                        <h1><span>Hours slept last night: {{sleep_record}} hours</span></h1><input @change="recordSleep" id="range" type="range" min="0" max="24" v-model="sleep_record">
                 </div>
             </div>
         </div>
@@ -90,7 +90,7 @@
         data:{
             week_name:['SUN','MON','TUE','WED','THU','FRI','SAT'],
             weight_record:0,
-            exercise_record:['N','N','N','N','Y','N','N'],
+            exercise_record:['N','N','N','N','N','N','N'],
             sleep_record:8,
             clock_day:'-1',
             tips1:'You should be proud!',
@@ -103,27 +103,56 @@
         },
         methods:{
             initRecord(){
-                let date = new Date();
-                this.clock_day = date.getDay();
-                this.weightData = ['22','22','23','23','23','23','50'];
-                this.initWeeklyWeightRecord(this.weightData);
-                this.sleepData = ['12','7','9','3','13','1','7'];
-                this.initWeeklySleepRecord(this.sleepData);
+                let data = null;
+                this.$http.post('/getRecord',data,{
+                    emulateJSON: true
+                }).then(function(res){
+                    this.weight_record = res.data.data.weight;
+                    this.sleep_record = res.data.data.sleepHours;
+                    this.exercise_record = res.data.data.weeklyExercise;
+
+                    let date = new Date();
+                    this.clock_day = date.getDay();
+                    this.weightData = res.data.data.weeklyWeight;
+                    this.initWeeklyWeightRecord(this.weightData);
+                    this.sleepData = res.data.data.weeklySleep;
+                    this.initWeeklySleepRecord(this.sleepData);
+                },function(){
+                    alert("System Error!");
+                });
+
             },
             recordExercise(){
                 this.exercise_record[this.clock_day] = 'Y';
             },
             recordSleep(){
-
+                let data = {sleepHours:this.sleep_record};
+                this.$http.post('/recordSleep',data,{
+                    emulateJSON: true
+                }).then(function(res){
+                    this.sleepData[this.clock_day] = this.sleep_record;
+                    this.initWeeklySleepRecord(this.sleepData);
+                },function(){
+                    alert("System Error!");
+                });
             },
             recordWeight(){
-
+                let data = {weight:this.weight_record};
+                this.$http.post('/recordWeight',data,{
+                    emulateJSON: true
+                }).then(function(res){
+                    this.weightData[this.clock_day] = this.weight_record;
+                    this.initWeeklyWeightRecord(this.weightData);
+                },function(){
+                    alert("System Error!");
+                });
             },
 
             initWeeklyWeightRecord(weightData){
                 let canvas=document.getElementById('wlc');
                 let ctx=canvas.getContext('2d');
-
+                ctx.clearRect(0,0,canvas.width,canvas.height);
+                canvas.width = canvas.width;
 
                 //border
                 ctx.lineWidth=0.5;
@@ -143,11 +172,15 @@
 
                 let i=0;
                 ctx.moveTo(30,410);
-                for(let weight in weightData){
+                for(let w in weightData){
+                    if (null==weightData[w]||''===weightData[w]){
+                        i++;
+                        continue;
+                    }
                     let x = 30+i*(1270/6);
-                    let y = 410-(120/50)*weightData[weight];
+                    let y = 410-(120/50)*weightData[w];
                     ctx.lineTo(x,y);
-                    ctx.fillText(weightData[weight], x, y);
+                    ctx.fillText(weightData[w], x, y);
                     i++;
                 }
 
@@ -164,7 +197,8 @@
             initWeeklySleepRecord(sleepData){
                 let canvas=document.getElementById('slc');
                 let ctx=canvas.getContext('2d');
-
+                ctx.clearRect(0,0,canvas.width,canvas.height);
+                canvas.width = canvas.width;
 
                 //border
                 ctx.lineWidth=0.5;
@@ -183,13 +217,17 @@
                 ctx.font = "20px bold";
 
                 let i=0;
-                ctx.moveTo(30,410);
+                ctx.moveTo(30,770);
 
-                for(let sleep in sleepData){
+                for(let s in sleepData){
+                    if (null==sleepData[s]||''===sleepData[s]){
+                        i++;
+                        continue;
+                    }
                     let x = 30+i*(1270/6);
-                    let y = 770-30*sleepData[sleep];
+                    let y = 770-30*sleepData[s];
                     ctx.lineTo(x,y);
-                    ctx.fillText(sleepData[sleep], x, y);
+                    ctx.fillText(sleepData[s], x, y);
                     i++;
                 }
 
