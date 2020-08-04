@@ -273,3 +273,22 @@ body {
     left: auto;
     right: 0;
 }
+
+.sub-window{
+    width: 280px;
+    height: 160px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    box-shadow: 10px 10px 5px #CECFD1;
+    background: #FFFFFF;
+    visibility:hidden;
+    transition:0.3s;
+}
+
+.sub-window:hover{
+}
+
+.sub-window-hide{
+    display: none;
+}

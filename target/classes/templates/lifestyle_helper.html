@@ -11,7 +11,7 @@
 
 <div id="lifestyleHelper" class="wrapper wrapper-content">
     <div class="row">
-        <div class="col-sm-4">
+        <div class="col-sm-5">
             <div class="ibox">
                 <div class="ibox-title">
                     <h3>Record your daily weight</h3>
@@ -23,7 +23,7 @@
             </div>
         </div>
 
-        <div class="col-sm-8">
+        <div class="col-sm-7">
             <div class="ibox">
                 <div class="ibox-title">
                     <h3>Record your weekly exercise</h3>
@@ -33,7 +33,7 @@
                     <span v-for="(item,index) in exercise_record">
                         <span v-if="item === 'N'">
                             <span v-if="index === clock_day" >
-                                <a href="#" @click.prevent="insertExercise"><img class="exec-icon exec-icon-clock" src="../static/imgs/ic_daily_exercise_n.png" th:src="@{imgs/ic_daily_exercise_n.png}"/></a>
+                                <img id="clock" @click.prevent="recordExercise" class="exec-icon exec-icon-clock" src="../static/imgs/ic_daily_exercise_n.png" th:src="@{imgs/ic_daily_exercise_n.png}"/>
                             </span>
                             <span v-else>
                                 <img class="exec-icon" src="../static/imgs/ic_daily_exercise_n.png" th:src="@{imgs/ic_daily_exercise_n.png}"/>
@@ -123,7 +123,15 @@
 
             },
             recordExercise(){
-                this.exercise_record[this.clock_day] = 'Y';
+                if (this.exercise_record[this.clock_day] === 'Y')
+                    return;
+                this.$http.post('/recordExercise').then(function(res){
+                    document.getElementById("clock").style.opacity='1';
+                    document.getElementById("clock").setAttribute("src",'imgs/ic_daily_exercise_y.png');
+                    this.exercise_record[this.clock_day] = 'Y';
+                },function(){
+                    alert("System Error!");
+                });
             },
             recordSleep(){
                 let data = {sleepHours:this.sleep_record};

@@ -16,40 +16,56 @@
             <div class="ibox">
                 <div class="ibox-title">
                     <h3>Mood Diary</h3>
-                    <h5 style="float:right;margin-top:-20px; ">Notify me
-                        <input style="margin-left: 5px;float:right" v-model="notifyFlg" type="checkbox">
-                    </h5>
+                    <h3 style="float:right; margin-top: -40px">Notify me latter
+                        <a href="#" @click.prevent="showSubWin"><img class="mood-icon" style="margin-top: -5px;width:50px;height: 50px" src="imgs/ic_time.png"/></a>
+                    </h3>
                 </div>
                 <div class="ibox-content">
                     <textarea maxlength="4000" class="text-box" v-model="content"></textarea>
                     <span>
-                        <a href="#" @click.prevent="setMoodStatus('0')"><img class="mood-icon" :style="{'opacity':(status=='0'?'1':'0.3')}" src="../static/imgs/ic_mood_bad.png" th:src="@{imgs/ic_mood_bad.png}"/></a>
-                        <a href="#" @click.prevent="setMoodStatus('1')"><img class="mood-icon" :style="{'opacity':(status=='1'?'1':'0.3')}" src="../static/imgs/ic_mood_normal.png" th:src="@{imgs/ic_mood_normal.png}"/></a>
-                        <a href="#" @click.prevent="setMoodStatus('2')"><img class="mood-icon" :style="{'opacity':(status=='2'?'1':'0.3')}" src="../static/imgs/ic_mood_happy.png" th:src="@{imgs/ic_mood_happy.png}"/></a>
-                        <a href="#" @click.prevent="setMoodStatus('3')"><img class="mood-icon" :style="{'opacity':(status=='3'?'1':'0.3')}" src="../static/imgs/ic_mood_ecstasy.png" th:src="@{imgs/ic_mood_ecstasy.png}"/></a>
+                        <a href="#" @click.prevent="setMoodStatus('0')"><img class="mood-icon" :style="{'opacity':(status=='0'?'1':'0.3')}" src="imgs/ic_mood_bad.png"/></a>
+                        <a href="#" @click.prevent="setMoodStatus('1')"><img class="mood-icon" :style="{'opacity':(status=='1'?'1':'0.3')}" src="imgs/ic_mood_normal.png"/></a>
+                        <a href="#" @click.prevent="setMoodStatus('2')"><img class="mood-icon" :style="{'opacity':(status=='2'?'1':'0.3')}" src="imgs/ic_mood_happy.png"/></a>
+                        <a href="#" @click.prevent="setMoodStatus('3')"><img class="mood-icon" :style="{'opacity':(status=='3'?'1':'0.3')}" src="imgs/ic_mood_ecstasy.png"/></a>
                     </span>
                     <button class="submit-button" v-on:click="submit">Submit</button>
-                    <button class="submit-button" v-on:click="submit">Clear diaries older than 7 days</button>
+                    <button class="submit-button" v-on:click="clearMoodDiaryOver7days">Clear diaries older than 7 days</button>
                 </div>
                 <div class="diaryContent" v-for="item in diaryData" :key="item.name">
                     <div class="ibox-content">
                         <h2>{{item.createTime}} : {{item.content}}
                             <span v-if="item.moodStatus === '0'">
-                                <img class="mood-icon" style="float: right;opacity:1" src="../static/imgs/ic_mood_bad.png" th:src="@{imgs/ic_mood_bad.png}"/>
+                                <img class="mood-icon" style="float: right;opacity:1" src="imgs/ic_mood_bad.png"/>
                             </span>
                             <span v-else-if="item.moodStatus === '1'">
-                                <img class="mood-icon" style="float: right;opacity:1" src="../static/imgs/ic_mood_bad.png" th:src="@{imgs/ic_mood_normal.png}"/>
+                                <img class="mood-icon" style="float: right;opacity:1" src="imgs/ic_mood_normal.png"/>
                             </span>
                             <span v-else-if="item.moodStatus === '2'">
-                                <img class="mood-icon" style="float: right;opacity:1" src="../static/imgs/ic_mood_happy.png" th:src="@{imgs/ic_mood_happy.png}"/>
+                                <img class="mood-icon" style="float: right;opacity:1" src="imgs/ic_mood_happy.png"/>
                             </span>
                             <span v-else-if="item.moodStatus === '3'">
-                                <img class="mood-icon" style="float: right;opacity:1" src="../static/imgs/ic_mood_ecstasy.png" th:src="@{imgs/ic_mood_ecstasy.png}"/>
+                                <img class="mood-icon" style="float: right;opacity:1" src="imgs/ic_mood_ecstasy.png"/>
                             </span>
                         </h2>
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div id="sub_window" class="sub-window">
+        <div class="ibox-title title-blue" align="center">
+            <h3><span>NOTIFY ME AT</span><span style="float: right"><a href="#" @click.prevent="closeSubWin">X</a></span></h3>
+        </div>
+        <div class="ibox-content" align="center">
+            <h3 style="margin-top: -10px">
+                <span>
+                    <input style="width: 110px;float:left;border:1px solid #c8cccf;border-radius:4px;outline:none;" placeholder="HOUR" v-model="hour">
+                    <span style="float:left;margin-left: 5px">:</span>
+                    <input style="width: 110px;float:left;margin-left: 5px;border:1px solid #c8cccf;border-radius:4px;outline:none;" placeholder="MIN" v-model="minute">
+                </span>
+            </h3>
+            <button @click.prevent="submitSubWin" style="font-size: 20px;color: #FFFFFF;background-color: #8FBAEF;border:none;outline:none;border-radius:20px;margin-top: 10px;padding-left: 20px;padding-right: 20px">OK</button>
         </div>
     </div>
 </div>
@@ -63,13 +79,21 @@
             content:null,
             status:1,
             diaryData:null,
-            notifyFlg:true
+            hour:null,
+            minute:null,
         },
         mounted:function(){
           this.getMoodDiary();
-          this.$watch("notifyFlg", function (newValue, oldValue) {
-              console.log(this.notifyFlg);
-          })
+          this.$watch("hour", function (newValue, oldValue) {
+              if (isNaN(this.hour)||this.hour>24||this.hour<0){
+                  this.hour = null;
+              }
+          });
+          this.$watch("minute", function (newValue, oldValue) {
+              if (isNaN(this.minute)||this.minute>60||this.minute<0){
+                  this.minute = null;
+              }
+          });
         },
         methods:{
             setMoodStatus(status){
@@ -79,7 +103,14 @@
                 this.$http.post('/getMoodDiaryContent').then(function(res){
                     this.diaryData = res.data.data;
                 },function(){
-                    console.log('Failed');
+                    alert('System Error!');
+                });
+            },
+            clearMoodDiaryOver7days(){
+                this.$http.post('/clearMoodDiaryOver7days').then(function(res){
+                    this.getMoodDiary();
+                },function(){
+                    alert('System Error!');
                 });
             },
             submit(){
@@ -97,8 +128,38 @@
                     this.getMoodDiary();
                     alert("Wish you have a good mood!");
                 },function(){
-                    console.log('Failed');
+                    alert('System Error!');
                 });
+            },
+            showSubWin(){
+                this.hour=null;
+                this.minute=null;
+                document.getElementById("sub_window").style.left='50%';
+                document.getElementById("sub_window").style.top='50%';
+                document.getElementById("sub_window").style.marginLeft='-140px';
+                document.getElementById("sub_window").style.marginTop='-75px';
+                document.getElementById("sub_window").style.visibility='visible';
+                document.getElementById("sub_window").style.transition='.3s';
+            },
+            submitSubWin(){
+
+                if (null!=this.hour&&null!=this.minute){
+
+                    window.parent.postMessage({  //参数是对象
+                        cmd: 'message',
+                        time: (this.hour+''+this.minute)
+                    }, '*');
+                }
+                document.getElementById("sub_window").style.transition='0s';
+                document.getElementById("sub_window").style.visibility='hidden';
+                document.getElementById("sub_window").style.left='0px';
+                document.getElementById("sub_window").style.top='0px';
+            },
+            closeSubWin(){
+                document.getElementById("sub_window").style.transition='0s';
+                document.getElementById("sub_window").style.visibility='hidden';
+                document.getElementById("sub_window").style.left='0px';
+                document.getElementById("sub_window").style.top='0px';
             }
         }
 

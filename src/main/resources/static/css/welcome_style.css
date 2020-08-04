@@ -68,7 +68,7 @@ body {
     transition: .5s;
     padding: 16px;
 
-    background: linear-gradient(125deg, #F8F8F8,#F8F8F8,#F8F8F8,#F8F8F8);
+    background: linear-gradient(125deg, #F8F8F8,#F8F8F8,#FAF0E6,#FFEBCD);
     animation: bgSize 10s infinite ease-in-out alternate;
 }
 

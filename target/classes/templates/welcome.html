@@ -34,21 +34,53 @@
         el:'#welcome',
         data:{
             isFolded:false,
-            target:'/getDashboard'
+            target:'/getDashboard',
+            timer: '',
+            notifyTime:null,
         },
         mounted(){
             let iframe = document.getElementById("iframe");
             this.fadeIn(iframe, 1000);
             window.addEventListener("message", function(data) {
-                if (data.data.target==='signOut')
-                    window.location.href = '/signOut';
-                app.target = data.data.target;
+                if (null!=data.data.target&&''!==data.data.target){
+                    if (data.data.target==='signOut')
+                        window.location.href = '/signOut';
+                    app.target = data.data.target;
+                }else{
+                    let date = new Date();
+                    this.notifyTime = data.data.time;
+                }
             });
             this.$watch("target", function (newValue, oldValue) {
                 this.fadeIn(iframe, 500);
             });
+
             document.getElementById("main").style.paddingLeft = '50px';
             document.getElementById("main").style.width = (document.body.clientWidth-50)+'px';
+
+            window.onresize = () => {
+                if (this.isFolded){
+                    document.getElementById("main").style.width = (document.body.clientWidth-300)+'px';
+                    document.getElementById("main").style.paddingLeft = '300px';
+                    this.isFolded = true;
+                } else {
+                    document.getElementById("main").style.width = (document.body.clientWidth-50)+'px';
+                    document.getElementById("main").style.paddingLeft = '50px';
+                    this.isFolded = false;
+                }
+            };
+
+            this.timer = setInterval(function(){
+                let date = new Date();
+                let nowTime = date.getDate()+''+date.getTime();
+                if (null!=this.notifyTime&&nowTime>=this.notifyTime){
+                    alert("Time to keep a diary");
+                    this.notifyTime = null;
+                }
+            }, 60000);
+        },
+        beforeDestroy() {
+            clearTimeout(this.timer);
         },
         methods:{
             foldNav() {

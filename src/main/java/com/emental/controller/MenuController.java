@@ -177,6 +177,17 @@ public class MenuController {
         return jr;
     }
 
+    @RequestMapping("/clearMoodDiaryOver7days")
+    @ResponseBody
+    public JsonResult clearMoodDiaryOver7days(){
+        String username = BaseInfoGenUtil.getUsername();
+        emMoodDiaryMapper.clearMoodDiaryOver7days(username);
+        JsonResult jr = new JsonResult();
+        jr.setData(null);
+        jr.setMessage("success");
+        return jr;
+    }
+
     @RequestMapping("/getRecord")
     @ResponseBody JsonResult getRecord(){
         String username = BaseInfoGenUtil.getUsername();
@@ -213,6 +224,18 @@ public class MenuController {
         String username = BaseInfoGenUtil.getUsername();
         String nowDate = BaseInfoGenUtil.getNowDate();
         emDailyRecordMapper.updateSleep(sleepHours,username,nowDate);
+
+        JsonResult jr = new JsonResult();
+        jr.setData(null);
+        jr.setMessage("success");
+        return jr;
+    }
+
+    @RequestMapping("/recordExercise")
+    @ResponseBody JsonResult recordExercise(){
+        String username = BaseInfoGenUtil.getUsername();
+        String nowDate = BaseInfoGenUtil.getNowDate();
+        emDailyRecordMapper.updateExercise(username,nowDate);
 
         JsonResult jr = new JsonResult();
         jr.setData(null);
