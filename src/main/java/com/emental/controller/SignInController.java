@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @Controller
-public class SingInController {
+public class SignInController {
     @Autowired
     private EmUserInfoMapper emUserInfoMapper;
     @Autowired
@@ -131,6 +131,12 @@ public class SingInController {
         HttpSession session = request.getSession();
         session.removeAttribute("username");
         return "redirect:/";
+    }
+
+    @RequestMapping("/resetPass")
+    public String resetPass(String nameOrMail){
+        emUserInfoMapper.getEmailAddress(nameOrMail);
+        return "account_activation";
     }
 
     public void sendTextMail(String username,String id,String email) throws MessagingException {
