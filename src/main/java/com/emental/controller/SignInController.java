@@ -19,6 +19,7 @@ import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.Map;
 
 @Controller
 public class SignInController {
@@ -134,9 +135,36 @@ public class SignInController {
     }
 
     @RequestMapping("/resetPass")
-    public String resetPass(String nameOrMail){
-        emUserInfoMapper.getEmailAddress(nameOrMail);
-        return "account_activation";
+    @ResponseBody
+    public JsonResult resetPass(String nameOrMail) throws MessagingException {
+        JsonResult jr = new JsonResult();
+        Map<String,String> map = emUserInfoMapper.getEmailAddress(nameOrMail);
+        if (null==map||map.size()==0){
+            jr.setMessage("failed");
+        }else{
+            sendRstPwdMail(map.get("USERNAME"),map.get("DATA_ID"),map.get("EMAIL_ADDRESS"));
+            jr.setMessage("success");
+        }
+        return jr;
+    }
+
+    @RequestMapping("/resetPassAlertPage")
+    public String resetPassAlertPage(){
+        return "reset_pass_alert";
+    }
+
+    @RequestMapping("/resetPassword")
+    public String resetPassword(){
+        return "reset_pass";
+    }
+
+    @RequestMapping("/doResetPassword")
+    @ResponseBody
+    public JsonResult doResetPassword(String id,String password){
+        emUserInfoMapper.resetPassword(id,password);
+        JsonResult jr = new JsonResult();
+        jr.setMessage("success");
+        return jr;
     }
 
     public void sendTextMail(String username,String id,String email) throws MessagingException {
@@ -148,6 +176,19 @@ public class SignInController {
         helper.setText("Hi "+username+"<br><br>" +
                 "Click the link below to activate your account.<br>" +
                 "<a href='http://localhost:8080/accountActivation?id="+id+"'>http://localhost:8080/accountActivation?id="+id+"</a>",true);
+        mailSender.send(mimeMessage);
+    }
+
+
+    public void sendRstPwdMail(String username,String id,String email) throws MessagingException {
+        MimeMessage mimeMessage = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
+        helper.setFrom(from);
+        helper.setTo(email);
+        helper.setSubject("Account activation");
+        helper.setText("Hi "+username+"<br><br>" +
+                "Click the link below to reset your password.<br>" +
+                "<a href='http://localhost:8080/resetPassword?id="+id+"'>http://localhost:8080/resetPassword?id="+id+"</a>",true);
         mailSender.send(mimeMessage);
     }
 }

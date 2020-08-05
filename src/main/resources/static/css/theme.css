@@ -1,7 +1,7 @@
 body {
     padding: 0;
     margin:0;
-    background-color:#FFF0F5;
+    background-color:#F8F8FF;
     font-family: "Microsoft YaHei UI Light", serif;
 }
 
@@ -15,15 +15,12 @@ h2 {
 }
 
 .outer_label {
-    position: relative;
-    left: 0;
-    top: 0;
     width: 100%;
-    height: auto;
-    background: -webkit-linear-gradient(left, #FFF0F5, #D8BFD8);
-    background: -o-linear-gradient(right, #FFF0F5, #D8BFD8);
-    background: -moz-linear-gradient(right, #FFF0F5, #D8BFD8);
-    background: linear-gradient(to right, #FFF0F5 , #D8BFD8);
+    height: 300px;
+    background: -webkit-linear-gradient(left, #EEDD82, #FFDAB9);
+    background: -o-linear-gradient(right, #EEDD82, #FFDAB9);
+    background: -moz-linear-gradient(right, #EEDD82, #FFDAB9);
+    background: linear-gradient(to right, #EEDD82 , #FFDAB9);
     text-align: center;
 }
 

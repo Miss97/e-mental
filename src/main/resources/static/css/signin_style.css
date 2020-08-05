@@ -1,27 +1,16 @@
 .v-enter,.v-leave-to{
     opacity: 0;
-    transform: translateX(150px)
+    transform: translateX(80px)
 
 }
 .v-enter-active,.v-leave-active{
-    transition: all 0.6s ease
+    transition: all 0.3s ease
 }
 
 .signIn_form {
     padding-top: 5%;
     padding-left: 10%;
     padding-right: 10%;
-    width:50%;
-    margin:0 auto;
-}
-
-.signUp_form{
-    display:none;
-    padding-top: 5%;
-    padding-left: 10%;
-    padding-right: 10%;
-    width:50%;
-    margin:0 auto;
 }
 
 .qxs-ic_user {
@@ -53,7 +42,7 @@
     height: 30px;
     font-size: 16px;
     color: #FFFFFF;
-    background-color: #D8BFD8;
+    background-color: #FFDAB9;
     border:none;
     outline:none;
     border-radius:15px;

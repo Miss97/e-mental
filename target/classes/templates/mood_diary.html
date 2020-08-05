@@ -147,7 +147,7 @@
 
                     window.parent.postMessage({  //参数是对象
                         cmd: 'message',
-                        time: (this.hour+''+this.minute)
+                        time: (parseInt(this.hour)+''+parseInt(this.minute))
                     }, '*');
                 }
                 document.getElementById("sub_window").style.transition='0s';

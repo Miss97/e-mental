@@ -4,6 +4,7 @@ import com.emental.dao.entity.EmUserInfo;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
+import java.util.Map;
 
 public interface EmUserInfoMapper {
 
@@ -26,6 +27,9 @@ public interface EmUserInfoMapper {
         @Select("SELECT * FROM EM_USER_INFO WHERE USERNAME = #{username}")
         EmUserInfo getUserInfo(String username);
 
+        @Select("SELECT DATA_ID,USERNAME,EMAIL_ADDRESS FROM EM_USER_INFO WHERE USERNAME = #{nameOrMail} OR EMAIL_ADDRESS = #{nameOrMail}")
+        Map<String,String> getEmailAddress(String nameOrMail);
+
         @Insert("INSERT INTO EM_USER_INFO(DATA_ID,USERNAME,PASSWORD,REAL_NAME,BIRTH_DATE,GENDER,EMAIL_ADDRESS,PHONE_NUMBER,PERSON_INFO,CREATE_DATE,STATUS) VALUES(#{dataId},#{username},#{password},#{realName},#{birthDate},#{gender},#{emailAddress},#{phoneNumber},#{personInfo},#{createDate},#{status})")
         void insert(EmUserInfo user);
 
@@ -37,6 +41,9 @@ public interface EmUserInfoMapper {
 
         @Update("UPDATE EM_USER_INFO SET USERNAME=#{username},PASSWORD=#{password},REAL_NAME=#{realName},BIRTH_DATE=#{birthDate},GENDER=#{gender},EMAIL_ADDRESS=#{emailAddress},PHONE_NUMBER=#{phoneNumber},PERSON_INFO=#{personInfo},CREATE_DATE=#{createDate},STATUS=#{status} WHERE DATA_ID =#{dataId}")
         void update(EmUserInfo user);
+
+        @Update("UPDATE EM_USER_INFO SET PASSWORD=#{password} WHERE DATA_ID =#{dataId}")
+        void resetPassword(String dataId,String password);
 
         @Delete("DELETE FROM EM_USER_INFO WHERE DATA_ID =#{dataId}")
         void delete(String dataId);

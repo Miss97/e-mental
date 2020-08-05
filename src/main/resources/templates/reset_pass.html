@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ADU Reset Password</title>
+    <link rel="stylesheet" type="text/css" href="css/signin_style.css">
+    <link rel="stylesheet" type="text/css" href="css/theme.css">
+    <link rel="stylesheet" type="text/css" href="css/character.css">
+</head>
+<body align="center">
+<div style="background-color:#FDFDFD;width:600px;height:800px;position: absolute;top: 50%;margin-top:-400px;margin-left:-300px;display: inline-block;border: solid 1px #DCDCDC;">
+    <div class="outer_label">
+        <span style="font-size: 100px;color: #FFFFFF">ADU</span>
+        <h2 style="margin-top: 70px;">Every day is a new self and a new start!</h2>
+    </div>
+
+    <div id="rstPassForm" class="signIn_form" align="center">
+        <div style="margin-top: 50px">
+            <transition name="" mode="out-in">
+                <component :is="target"></component>
+            </transition>
+        </div>
+
+    </div>
+</div>
+</body>
+
+<script th:src="@{scripts/vue.min.js}"></script>
+<script th:src="@{scripts/vue-resource.min.js}"></script>
+<script type = "text/javascript">
+    Vue.component('rstPass',{
+            data: {
+                legealPassword:false
+            },
+            template:'<div id="rstPass">' +
+                        '<div style="margin-bottom: 50px">' +
+                            '<a>RESET PASSWORD</a>'+
+                        '</div>' +
+                        '<input type="password" ref="password" class="qxs-ic_password qxs-icon"  placeholder="PASSWORD">' +
+                        '<input type="password" @blur="passwordVerify" ref="passwordRe" @blur="passwordVerify" ref="passwordRe" class="qxs-ic_password qxs-icon"  placeholder="REPEAT PASSWORD">' +
+                        '<button class="signIn_btn" v-on:click="rstPassHandler">Confirm</button>' +
+                    '</div>',
+            methods:{
+                passwordVerify(){
+                    let pass = this.$refs.password.value
+                    let passRe = this.$refs.passwordRe.value;
+                    if (pass!==passRe){
+                        alert("Inconsistent passwords!")
+                        this.$refs.passwordRe.value = null;
+                        this.legealPassword=false;
+                        return;
+                    }
+                    if (null==pass||''===pass){
+                        this.legealPassword=false;
+                        return;
+                    }
+                    this.legealPassword=true;
+                },
+
+                rstPassHandler(){
+                    let password = this.$refs.password.value;
+
+                    if (this.legealPassword){
+                        let params = window.location.search.substring(1).split("&");
+                        let id = params[0].split("=");
+                        console.log(id);
+
+                        let data = {password:password,id:id[1]};
+                        this.$http.post('/doResetPassword',data,{
+                            emulateJSON: true
+                        }).then(function(res){
+                            if(res.data.message==="success"){
+                                alert("Success!");
+                                window.location.href = '/';
+                            }else {
+                                alert("System Error!");
+                            }
+                        },function(){
+
+                        });
+                    } else  {
+                        alert("Illegeal information!");
+                    }
+                }
+            }
+        }
+    )
+
+    const app = new Vue({
+        el: '#rstPassForm',
+        data: {
+            title:'ADU',
+            sub_title:'Every day is a new self and a new start!',
+            target: 'rstPass'
+        }
+    });
+</script>
+</html>
