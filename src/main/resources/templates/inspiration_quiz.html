@@ -55,6 +55,7 @@
             next_flag:false,
             yesButton:'YES',
             noButton:'NO',
+            end_flag:false,
             questions:[
                 {question:'Do you often decline social invitations?',
                     hint:null},
@@ -77,15 +78,13 @@
         },
         methods:{
             nextQuestion(){
-                if (this.yesButton==='RESTART'){
+                if (this.point===this.questions.length-1&&this.next_flag){
                     this.yesButton = 'YES';
-                    this.noButton = 'NO';
-                    this.point = 0;
-                }
-                if (this.point==this.questions.length-1&&this.next_flag){
-                    this.yesButton = 'RESTART';
-                    this.noButton = 'RESTART';
+                    this.noButton = 'YES';
+                    this.end_flag = true;
                     this.next_flag = false;
+                    this.point = 0;
+                    this.hint = null;
                     return;
                 }
                 if (this.point<this.questions.length){
