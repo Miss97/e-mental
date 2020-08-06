@@ -2,7 +2,8 @@ package com.emental;
 
 import com.emental.dao.entity.EmUserInfo;
 import com.emental.dao.mapper.EmUserInfoMapper;
-import com.sun.xml.internal.messaging.saaj.packaging.mime.MessagingException;
+import com.emental.util.BaseInfoGenUtil;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,6 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -28,20 +28,40 @@ public class UserMapperTest {
     private JavaMailSender mailSender;
 
     @Test
-    public void testQuery() throws Exception {
+    public void signInVerfiyTest() throws Exception {
         int flag = emUserInfoMapper.signInVerify("admin","admin");
-        System.out.println(flag);
+        Assert.assertEquals(1,flag);
     }
 
     @Test
-    public void sendTextMail() {
-        // 纯文本邮件对象
+    public void usernameVerifyTest() throws Exception {
+        int flag = emUserInfoMapper.usernameVerify("admin");
+        Assert.assertEquals(1,flag);
+    }
+
+    @Test
+    public void emailVerifyTest() throws Exception {
+        int flag = emUserInfoMapper.emailVerify("test@test.com");
+        Assert.assertEquals(1,flag);
+    }
+
+    @Test
+    public void sendTextMailText() {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(from);
-        message.setTo("mu20101@126.com");
-        message.setSubject("无题");
-        message.setText("测试");
+        message.setTo("test@test.com");
+        message.setSubject("TEST");
+        message.setText("TEST");
         mailSender.send(message);
+    }
 
+    @Test
+    public void insertRecordTest() throws Exception {
+        EmUserInfo userInfo = new EmUserInfo();
+        userInfo.setDataId(BaseInfoGenUtil.getDataId(32));
+        userInfo.setUsername("test");
+        userInfo.setPassword("test");
+        userInfo.setCreateDate(BaseInfoGenUtil.getNowDate());
+        emUserInfoMapper.insert(userInfo);
     }
 }
