@@ -4,8 +4,8 @@ spring:
     url: jdbc:sqlite:C:\Users\mu20101\AppData\Local\Packages\CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc\LocalState\rootfs\tmp\sqlite-autoconf-3320300\emental.db
   mail:
     host: smtp.office365.com
-    username: mu20101@outlook.com
-    password: shayezhige00
+    username: Loryyy2020@outlook.com
+    password: 1221zy..
     properties:
       mail:
         smtp:
@@ -15,7 +15,7 @@ spring:
             required: true
 mail:
   fromMail:
-    addr: ADU Team<mu20101@outlook.com>
+    addr: ADU Team<Loryyy2020@outlook.com>
 
 server:
   port: 8080

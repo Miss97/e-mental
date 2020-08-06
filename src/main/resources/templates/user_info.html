@@ -95,7 +95,6 @@
                             emailAddress:this.email,
                             phoneNumber:this.phone,
                             personInfo:this.info};
-                console.log(data);
                 this.$http.post('/saveUserInfo',data,{
                     emulateJSON: true
                 }).then(function(res){

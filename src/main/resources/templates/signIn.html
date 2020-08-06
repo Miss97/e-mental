@@ -195,7 +195,6 @@
                 },
                 pwdRstHandler(){
                     let nameOrMail = this.$refs.nameOrMail.value;
-                    console.log(nameOrMail);
                     if (nameOrMail!=null||''!==nameOrMail){
                         let data = {nameOrMail:nameOrMail};
                         this.$http.post('/resetPass',data,{

@@ -64,7 +64,6 @@
                     if (this.legealPassword){
                         let params = window.location.search.substring(1).split("&");
                         let id = params[0].split("=");
-                        console.log(id);
 
                         let data = {password:password,id:id[1]};
                         this.$http.post('/doResetPassword',data,{
