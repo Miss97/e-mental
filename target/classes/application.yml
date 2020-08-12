@@ -3,9 +3,9 @@ spring:
     driver-class-name: org.sqlite.JDBC
     url: jdbc:sqlite:C:\Users\mu20101\AppData\Local\Packages\CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc\LocalState\rootfs\tmp\sqlite-autoconf-3320300\emental.db
   mail:
-    host: smtp.office365.com
-    username: Loryyy2020@outlook.com
-    password: 1221zy..
+    host: smtp.qq.com
+    username: 649791555@qq.com
+    password: lxkaexfxhrwibeff
     properties:
       mail:
         smtp:
@@ -15,7 +15,7 @@ spring:
             required: true
 mail:
   fromMail:
-    addr: ADU Team<Loryyy2020@outlook.com>
+    addr: ADU Team<649791555@qq.com>
 
 server:
   port: 8080
