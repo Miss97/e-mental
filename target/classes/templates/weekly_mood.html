@@ -39,7 +39,7 @@
                 this.$http.post('/getLast7Mood').then(function(res){
                     this.drawLineChart(res.data.data);
                 },function(){
-                    console.log('Failed');
+                    alert('Failed');
                 });
             },
 

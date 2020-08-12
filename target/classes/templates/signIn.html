@@ -37,7 +37,7 @@
                         '</div>' +
                         '<input type="text" ref="username" class="qxs-ic_user qxs-icon" placeholder="USERNAME">' +
                         '<input type="password" ref="password" class="qxs-ic_password qxs-icon" placeholder="PASSWORD">' +
-                        '<button class="signIn_btn" v-on:click="signInHandler">Confirm</button>' +
+                        '<button id="sign_in_btn" class="signIn_btn" v-on:click="signInHandler">Confirm</button>' +
                         '<a href="#" @click.prevent="turnToFgtPass" style="float: right;margin-top:20px;"><h5>Forgot password?</h5></a>'+
                         '<a href="#" @click.prevent="turnToSignUp" style="float: left;margin-top:20px;"><h5>Create an account</h5></a>'+
                      '</div>',
@@ -54,10 +54,12 @@
                     if (username == null||'' === username||password == null||'' === password){
                         alert("Illegeal username or password!");
                     }
+                    document.getElementById("sign_in_btn").disabled=true;
                     let data = {username:username,password:password};
                     this.$http.post('/signInVerify',data,{
                         emulateJSON: true
                     }).then(function(res){
+                        document.getElementById("sign_in_btn").disabled=false;
                         if (res.data.message==="failed"){
                             alert("Wrong username or password!");
                         }else if(res.data.message==="success"){
@@ -77,7 +79,7 @@
             data: {
                 legealUsername:false,
                 legealPassword:false,
-                legealEmail:false
+                legealEmail:false,
             },
             template:'<div id="singUp">' +
                         '<div style="margin-bottom: 50px">' +
@@ -87,7 +89,7 @@
                         '<input type="password" ref="password" class="qxs-ic_password qxs-icon"  placeholder="PASSWORD">' +
                         '<input type="password" @blur="passwordVerify" ref="passwordRe" @blur="passwordVerify" ref="passwordRe" class="qxs-ic_password qxs-icon"  placeholder="REPEAT PASSWORD">' +
                         '<input type="email" @blur="emailVerify" ref="email" class="qxs-ic_mail qxs-icon"  placeholder="EMAIL ADDRESS">' +
-                        '<button class="signIn_btn" v-on:click="signUpHandler">Confirm</button>' +
+                        '<button id="sign_up_btn" class="signIn_btn" v-on:click="signUpHandler">Confirm</button>' +
                         '<a href="#" @click.prevent="turnToSignIn" style="float: right;margin-top:20px;"><h5>Already have an account?</h5></a>'+
                 '</div>',
             methods:{
@@ -159,11 +161,13 @@
                     let password = this.$refs.password.value;
                     let email = this.$refs.email.value;
 
+                    document.getElementById("sign_up_btn").disabled=true;
                     if (this.legealUsername&&this.legealPassword&&this.legealEmail){
                         let data = {username:username,password:password,email:email};
                         this.$http.post('/signUpVerify',data,{
                             emulateJSON: true
                         }).then(function(res){
+                            document.getElementById("sign_up_btn").disabled=false;
                             if(res.data.message==="success"){
                                 window.location.href = '/signUp';
                             }else {
@@ -186,7 +190,7 @@
                             '<a>RESET PASSWORD</a>'+
                         '</div>' +
                         '<input type="text" class="qxs-ic_user qxs-icon" ref="nameOrMail" placeholder="USERNAME OR EMAIL">' +
-                        '<button class="signIn_btn" v-on:click="pwdRstHandler">Confirm</button>' +
+                        '<button id="fgt_pass_btn" class="signIn_btn" v-on:click="pwdRstHandler">Confirm</button>' +
                         '<a href="#" @click.prevent="turnToSignUp" style="float: right;margin-top:20px;"><h5>Create an account</h5></a>'+
                     '</div>',
             methods:{
@@ -195,12 +199,13 @@
                 },
                 pwdRstHandler(){
                     let nameOrMail = this.$refs.nameOrMail.value;
-                    console.log(nameOrMail);
+                    document.getElementById("fgt_pass_btn").disabled=true;
                     if (nameOrMail!=null||''!==nameOrMail){
                         let data = {nameOrMail:nameOrMail};
                         this.$http.post('/resetPass',data,{
                             emulateJSON: true
                         }).then(function(res){
+                            document.getElementById("fgt_pass_btn").disabled=false;
                             if(res.data.message==="failed"){
                                 alert("Invalid username or email!");
                             }else if(res.data.message==="success"){

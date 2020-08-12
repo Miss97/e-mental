@@ -173,8 +173,8 @@
                     this.mood_normal = 0;
                     this.mood_happy = 0;
                     this.mood_ecstasy = 0;
-                    for (let status in res.data.data){
-                        switch (status) {
+                    for (let s in res.data.data){
+                        switch (res.data.data[s]) {
                             case '0':this.mood_bad++;break;
                             case '1':this.mood_normal++;break;
                             case '2':this.mood_happy++;break;
